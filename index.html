@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 30%;
+            background: #f0f2f5;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .chat-container {
+            width: 70%;
+            border-left: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .chat-input {
+            padding: 10px;
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            background: #f0f2f5;
+        }
+        .chat-input button {
+            background: #0084ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .chat-list div {
+            padding: 10px;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .chat-list div:hover {
+            background: #e4e6eb;
+        }
+        .chat-list div img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Đoạn chat</h2>
+        <div class="chat-list">
+            <div><img src="quỳnh.jpg" alt="Avatar"> Quỳnh: Em chào anh</div>
+            <div><img src="hieu.jpg" alt="Avatar"> Hiếu: Chào bạn. Mình là Hiếu</div>
+            <div><img src="Linh.jpg" alt="Avatar"> Ngọc Linh: Xin chào</div>
+            <div><img src="Mai.jpg" alt="Avatar"> Lê Mai: hi cậu </div>
+            <div><img src="Hùng.jpg" alt="Avatar"> Hoàng Hùng: Chào </div>
+            <div><img src="nam hoàng.jpg" alt="Avatar"> Nam Hoàng: Hello cậu </u></div>
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="chat-header">Lao Động Là Vinh Quang</div>
+        <div class="chat-messages" id="messages"></div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
+            <button onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let input = document.getElementById("messageInput");
+            let message = input.value.trim();
+            if (message) {
+                let messageContainer = document.getElementById("messages");
+                let newMessage = document.createElement("div");
+                newMessage.textContent = message;
+                newMessage.style.padding = "10px";
+                newMessage.style.background = "#0084ff";
+                newMessage.style.color = "white";
+                newMessage.style.borderRadius = "10px";
+                newMessage.style.margin = "5px 0";
+                newMessage.style.alignSelf = "flex-end";
+                messageContainer.appendChild(newMessage);
+                input.value = "";
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
