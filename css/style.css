@@ -1155,6 +1155,15 @@ textarea::placeholder {
   padding: 0 20px;
 }
 
+.post__box-like:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.users-like {
+  padding: 10px;
+}
+
 .post__box-emotion_right {
   display: flex;
   align-items: center;

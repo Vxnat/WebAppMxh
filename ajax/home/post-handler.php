@@ -910,5 +910,42 @@
         echo $output;
     }
 
+    //  Lấy danh sách User đã like Post
+    if(isset($_POST['fetchUsersLike'])){
+        $postId = $_POST['postId'];
+
+        $query = 'SELECT u.user_id, u.full_name ,u.avatar FROM users u
+            join likes l on l.user_id = u.user_id
+            where l.post_id = ?;';
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $postId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $output = '';
+
+        if($result -> num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $fullName = $row['full_name'];
+                $avatar = !empty($row['avatar']) ? $row['avatar'] : '../img/default-avatar.png';
+                $profileUrl = "profile.php?user_id=" . $row['user_id']; // đường link đến profile
+                $output .= '<ul class="sidebar__wrapper-list">';
+                $output .= "
+                    <a href='$profileUrl'>
+                                    <li class='sidebar__wrapper-item'>
+                                        <img src='$avatar'
+                                            alt='' />
+                                        <span class='title'>$fullName</span>
+                                    </li>
+                    </a>
+                ";
+            }
+            $output .= '</ul>';
+        }
+
+        echo $output;
+    }
+
 
     

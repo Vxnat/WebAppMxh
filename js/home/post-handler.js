@@ -713,6 +713,28 @@ $(document).ready(function () {
     $('.overlay').removeClass('active');
   }
 
+  // Hiện danh sách user đã like Post
+  $(document).on('click', '.post__box-like', function () {
+    const postId = $(this).closest('.post__box-post').data('post-id');
+    $.ajax({
+      url: '../ajax/home/post-handler.php',
+      method: 'POST',
+      data: { fetchUsersLike: true, postId: postId },
+      success: function (data) {
+        const dialogForm = $('.dialog-container');
+        const html = `
+          <div class='dialog-wrapper'>
+            <p style='text-align:center; font-size:17px;font-weight:600;'>Danh sách Like</p>
+            <div class='users-like'>
+              ${data}
+            </div>
+          </div>
+        `;
+        dialogForm.html(html).addClass('active');
+      },
+    });
+  });
+
   // Get Post By ID
   function getPost() {
     const urlParams = new URLSearchParams(window.location.search);
