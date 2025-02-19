@@ -234,216 +234,153 @@ textarea::placeholder {
   background-color: var(--white-color);
   display: none;
 }
-
-
-
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: black;
-            border-radius: 5px;
-        }
-        .sidebar a:hover {
-            background-color: #e0e0e0;
-        }
-        .sidebar button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #e7f3ff;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-          
-        }
-        .item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        .item a {
-            text-decoration: none;
-            font-weight: bold;
-            color: black;
-        }
-        .saved-items {
-          display: flex;
-          justify-content: space-between;
-      }
-      .saved-items a {
-        text-decoration: none;
-      }
-      .sidebar {
-          width: 25%; /* Bạn có thể điều chỉnh độ rộng của sidebar */
-          background-color: #f4f4f4;
-          padding: 20px;
-          box-sizing: border-box;
-      }
-      
-      .content {
-          width: 75%; /* Bạn có thể điều chỉnh độ rộng của content */
-          padding: 20px;
-          box-sizing: border-box;
-      }
-      
-      .sidebar-link {
-          display: block;
-          margin: 10px 0;
-          text-decoration: none;
-          color: #333;
-      }
-      
-      .create-collection {
-          background-color: #4CAF50;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          cursor: pointer;
-      }
-      
-      .create-collection:hover {
-          background-color: #45a049;
-      }
-      
-      .saved-items > .saved-items {
-          margin-top: 15px;
-          display: flex;
-          align-items: center;
-          border-bottom: 1px solid #ddd;
-          padding-bottom: 10px;
-      }
-      
-      .saved-items img {
-          width: 40px;
-          height: 40px;
-          margin-right: 15px;
-      }
-      
-      .saved-items button {
-          background-color: #007bff;
-          color: white;
-          border: none;
-          padding: 5px 10px;
-          cursor: pointer;
-      }
-      
-      .saved-items button:hover {
-          background-color: #0056b3;
-      }
-      .saved-items div {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Căn trái */
-        padding-left: 15px; /* Khoảng cách nhỏ từ lề trái */
-        padding-right: 15px; /* Tạo khoảng cách phía bên phải để không bị sát cạnh */
-        width: 100%; /* Đảm bảo phần tử này chiếm toàn bộ chiều rộng */
-        box-sizing: border-box;
-    }
-    
-    .saved-items h3 {
-        margin: 0;
-        padding: 0;
-        font-size: 18px; /* Kích thước chữ vừa phải */
-        font-weight: 600; /* Đậm vừa phải để tạo sự nổi bật */
-        color: #333; /* Màu chữ đen nhưng không quá đậm */
-        margin-bottom: 8px; /* Khoảng cách giữa h3 và button */
-    }
-    
-    .saved-items {
-    display: flex;
-    width: 80%;
-    max-width: 1000px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    gap: 20px;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
 }
 
-/* Sidebar */
+.saved-container {
+  display: flex;
+  padding: 20px;
+}
+
 .sidebar {
-    width: 250px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
+  width: 280px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-link {
-    display: block;
-    padding: 10px;
-    color: #1877f2;
-    text-decoration: none;
-    font-weight: bold;
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
 }
 
+.saved-menu {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+}
 
+.saved-menu:hover {
+  background-color: #f0f2f5;
+}
 
+.saved-menu i {
+  margin-right: 10px;
+}
 
-/* Content */
+.collection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.collection:hover {
+  background-color: #f0f2f5;
+}
+
+.collection img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.create-collection {
+  background: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-collection:hover {
+  background: #165dd1;
+}
+
 .content {
-    flex: 1;
+  flex: 1;
+  margin-left: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.content h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
+.saved-item {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: black;
 }
 
-.saved-items .card {
-    display: flex;
-    align-items: center;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    margin-bottom: 10px;
-    gap: 16px;
+.saved-item:hover {
+  background-color: #e4e6eb;
 }
 
-.saved-items img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
-    object-fit: cover;
+.saved-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
-.saved-items div {
-    flex: 1;
+.video-thumbnail {
+  position: relative;
 }
 
-.saved-items a h3 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 4px;
+.video-thumbnail .video-duration {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: black;
+  color: white;
+  padding: 3px 6px;
+  font-size: 12px;
+  border-radius: 4px;
 }
 
-.saved-items button {
-    background: #e4e6eb;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
+.item-info {
+  margin-left: 15px;
 }
 
-.saved-items button:hover {
-    background: #213f8a;
+.item-info h3 {
+  margin: 0;
+  font-size: 18px;
 }
 
-.saved-items i {
-    font-size: 18px;
-    color: #3b64b8;
-    cursor: pointer;
-}        
-        
-        
-        
+.item-info p {
+  color: gray;
+  font-size: 14px;
+}
+
+.btn {
+  background: #e4e6eb;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #d8dadf;
+}
