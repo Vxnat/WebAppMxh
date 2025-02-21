@@ -76,6 +76,7 @@
                         <span><?=$_SESSION['full_name'] ?></span>
                     </div>
                     <ul class="action_list">
+                        <a href="../page/setting.php">
                         <li class="action_item">
                             <div style="display: flex; align-items: center;">
                                 <img src="../img/setting.png" alt="">
@@ -83,6 +84,7 @@
                             </div>
                             <i class="fa-solid fa-chevron-right"></i>
                         </li>
+                        </a>
                         <li class="action_item">
                             <div style="display: flex; align-items: center;">
                                 <img src="../img/favorite.png" alt="">
