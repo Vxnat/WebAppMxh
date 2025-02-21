@@ -1,0 +1,8 @@
+ket noi database : xong
+hien thi thong tin user trong edit profile : xong
+gui ket ban cho user khac
+nhan vao message chuyen den trang nhan tin
+nhan vao friend hien thong bao huy ket ban
+hien thi danh sach ban be : xong
+hien thi danh sach ban chung : xong
+hien thi thong tin ve nguoi dung : xong

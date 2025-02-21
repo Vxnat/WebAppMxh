@@ -19,7 +19,8 @@
   background-color: #fff;
   bottom: 10px;
   right: 10px;
-  padding: 7px 12px;
+  font-size: 15px;
+  padding: 4px 6px;
   border-radius: 5px;
   outline: none;
   border: 1px solid #ccc;
@@ -65,6 +66,7 @@
   background-color: #eeeeee;
   border-radius: 50%;
   padding: 5px;
+  font-size: 12px;
 }
 
 .avatar-btn:hover {
@@ -124,6 +126,7 @@
   padding: 15px 12px;
   display: inline-flex;
   margin-top: 30px;
+  cursor: pointer;
 }
 
 .pd-right a img {
@@ -131,6 +134,10 @@
 }
 
 .pd-right a:hover {
+  opacity: 0.8;
+}
+
+.pd-right button:hover {
   opacity: 0.8;
 }
 
@@ -209,9 +216,10 @@
 .photo-box,
 .friends-box {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   grid-gap: 10px;
   margin-top: 15px;
+  justify-content: center; /* Canh giữa nếu có ít bạn bè */
 }
 
 .photo-box div img {
@@ -221,11 +229,16 @@
 }
 
 .friends-box div img {
-  width: 100%;
+  /* width: 100%;
   height: auto;
   cursor: pointer;
   border-radius: 5px;
+  padding-bottom: 30px; */
+  max-width: 70px;
+  overflow: hidden;
+  border-radius: 5px;
   padding-bottom: 30px;
+  cursor: pointer;
 }
 
 .friends-box div {
@@ -242,4 +255,24 @@
 
 .friends-box p:hover {
   text-decoration: underline;
+}
+
+.post__box-content {
+  margin: 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+#edit-profile-modal {
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: none;
 }
