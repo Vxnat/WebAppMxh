@@ -32,3 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
         });
 });
+document.getElementById('avatar-btn').addEventListener('click', function () {
+    document.getElementById('dropdown-menu').classList.toggle('active');
+});
+
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.avatar-btn') && !e.target.closest('.dropdown-menu')) {
+        document.getElementById('dropdown-menu').classList.remove('active');
+    }
+});
