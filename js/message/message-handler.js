@@ -39,6 +39,19 @@ $(document).ready(function () {
     $(this).attr('rows', $(this).val().split('\n').length);
   });
 
+  // Lấy dữ liệu các cuộc trò chuyện
+  function getPersonChatList() {
+    $.ajax({
+      url: '../ajax/message/message-handler.php',
+      method: 'POST',
+      data: { getPersonChatList: true },
+      success: function (response) {
+        $('.person-chat').append(response);
+      },
+    });
+  }
+  getPersonChatList();
+
   // --> Chức năng chuyển qua trang chat khác
   // Chọn tất cả phần từ có thuộc tính data-conversation
   $(document).on('click', '[data-conversation]', function (e) {

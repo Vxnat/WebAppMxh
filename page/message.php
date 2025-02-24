@@ -201,10 +201,7 @@
                                     <div class="conversation-item-wrapper">
                                         <div class="conversation-item-box">
                                             <div class="conversation-item-text">
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint,
-                                                    debitis. Iste natus est aliquam ipsum doloremque fugiat, quidem eos
-                                                    autem? Dolor quisquam laboriosam enim cum laborum suscipit
-                                                    perferendis adipisci praesentium.</p>
+                                                <p>không</p>
                                                 <div class="conversation-item-time">12:30</div>
                                             </div>
                                             <div class="conversation-item-dropdown">
