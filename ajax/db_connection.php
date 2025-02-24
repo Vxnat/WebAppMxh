@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost","root","","social_media_web");
+$conn = new mysqli("localhost","root","","nhat");
 
 // Check connection
 if ($conn -> connect_errno) {
