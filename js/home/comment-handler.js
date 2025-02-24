@@ -741,4 +741,26 @@ $(document).ready(function () {
       $replyBox.slideDown(); // Thực hiện hiệu ứng trượt xuống
     }
   });
+
+  // Chức năng hiển thị danh sách những người đã like comment
+  $(document).on('click', '.total-like', function () {
+    const commentId = $(this).closest('.post__box-comment_item').data('comment-id');
+    $.ajax({
+      url: '../ajax/home/comment-handler.php',
+      method: 'POST',
+      data: { fetchUsersLikeComment: true, commentId: commentId },
+      success: function (data) {
+        const dialogForm = $('.dialog-container');
+        const html = `
+          <div class='dialog-wrapper'>
+            <p style='text-align:center; font-size:17px;font-weight:600;'>Danh sách Like</p>
+            <div class='users-like'>
+              ${data}
+            </div>
+          </div>
+        `;
+        dialogForm.html(html).addClass('active');
+      },
+    });
+  });
 });
