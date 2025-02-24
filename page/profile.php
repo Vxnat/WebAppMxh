@@ -173,19 +173,15 @@
                         <div class="friends-box">
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />
-                                <p>Joe</p>
+                                <p>xuan nhat</p>
                             </div>
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />
-                                <p>Nathan</p>
+                                <p>hong phuc</p>
                             </div>
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />
-                                <p>Geogre</p>
-                            </div>
-                            <div>
-                                <img src="../img/default-avatar.png" alt="" />
-                                <p>Francis</p>
+                                <p>manh gat</p>
                             </div>
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />
@@ -246,10 +242,10 @@
                                     <div class="post__box-emotion">
                                         <div class="post__box-like">
                                             <i class="fas fa-heart" style="color: red"></i>
-                                            <span>2</span>
+                                            <span>8</span>
                                         </div>
                                         <div class="post__box-emotion_right">
-                                            <div class="post__box-comment">1 comments</div>
+                                            <div class="post__box-comment">2 comments</div>
                                             <div class="post__box-share">2 shares</div>
                                         </div>
                                     </div>
