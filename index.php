@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
-
+    
 </head>
 <body>
     <div class="container">
@@ -27,7 +27,7 @@
                 <ul class="header__action-action_list">
                     <li class="header__action-action_item" id="navbar-home">
                         <a style="background-color: #c9e2ff">
-                            <i class="fas fa-home" style="color: #3080eb"></i>
+                            <i class="fas fa-home"></i>
                         </a>
                     </li>
                     <li class="header__action-action_item" id="navbar-chat">
@@ -82,12 +82,12 @@
         
             <main class="content">
                 <h2>Tất cả</h2>
+                <div id="article-list"></div>
                 <a href="#" class="saved-item">
                     <img src="img/images.jpg" alt="Cờ tướng">
                     <div class="item-info">
                         <h3>Màn đấu trí hay nhất thế kỉ của 2 vua cờ </h3>
-                        <button class="btn">Thêm vào bộ sưu tập</button>
-                        <button class="btn">Bỏ lưu</button>
+                        <button class="btn">Xoá</button>
                     </div>
                 </a>
         
@@ -98,9 +98,7 @@
                     </div>
                     <div class="item-info">
                         <h3>Toàn cảnh vụ bố đánh con ngay ở sân nhà</h3>
-                        <p>Video • Đã lưu vào Để xem sau</p>
-                        <button class="btn">Thêm vào bộ sưu tập</button>
-                        <button class="btn">Bỏ lưu</button>
+                        <button class="btn">Xoá</button>
                     </div>
                 </a>
             </main>
