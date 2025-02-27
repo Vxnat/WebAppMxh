@@ -80,29 +80,13 @@
                 <a href="create.html"><button class="create-collection">+ Tạo bộ sưu tập mới</button></a>
             </aside>
         
-            <main class="content">
+            <main class="content">            
                 <h2>Tất cả</h2>
                 <div id="article-list"></div>
-                <a href="#" class="saved-item">
-                    <img src="img/images.jpg" alt="Cờ tướng">
-                    <div class="item-info">
-                        <h3>Màn đấu trí hay nhất thế kỉ của 2 vua cờ </h3>
-                        <button class="btn">Xoá</button>
-                    </div>
-                </a>
-        
-                <a href="#" class="saved-item">
-                    <div class="video-thumbnail">
-                        <img src="img/tải xuống (1).jpg" alt="Video">
-                        <span class="video-duration">01:06</span>
-                    </div>
-                    <div class="item-info">
-                        <h3>Toàn cảnh vụ bố đánh con ngay ở sân nhà</h3>
-                        <button class="btn">Xoá</button>
-                    </div>
-                </a>
+                
             </main>
         </div>
     </div>
+    
 </body>
 </html>

@@ -1,19 +1,19 @@
 <?php
-header('Content-Type: application/json'); // Đảm bảo trả về JSON
+header("Content-Type: application/json");
 include 'connect.php';
 
-$sql = "SELECT * FROM savedposts ORDER BY saved_at DESC";
+$sql = "SELECT savedposts.saved_id, savedposts.user_id, savedposts.post_id, savedposts.saved_at FROM savedposts";
 $result = $conn->query($sql);
 
-$posts = [];
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $posts[] = $row;
+$saved_posts = [];
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $saved_posts[] = $row;
     }
-    echo json_encode($posts);
-} else {
-    echo json_encode([]); // Trả về mảng rỗng nếu không có dữ liệu
 }
 
 $conn->close();
+
+echo json_encode($saved_posts);
 ?>

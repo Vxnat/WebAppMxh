@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: application/json");
 include 'connect.php';
 
 if (isset($_GET['id'])) {
