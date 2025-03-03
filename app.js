@@ -3,19 +3,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hiển thị danh sách bài viết
     fetch('fetch.php')
-        .then(response => response.json())
-        .then(data => {
-            articleList.innerHTML = data.map(item => `
-                <div class="saved-item">
-                    <div class="item-info">
-                        <h3>Post ID: ${item.post_id}</h3>
-                        <p>User ID: ${item.user_id}</p>
-                        <p>Saved at: ${item.saved_at}</p>
-                        <button class="btn" onclick="deleteArticle(${item.saved_id})">Bỏ lưu</button>
-                    </div>
+    .then(response => response.json())
+    .then(data => {
+        let savedPostsContainer = document.getElementById('savedPosts');
+        savedPostsContainer.innerHTML = '';
+
+        data.forEach(post => {
+            let postElement = `
+                <div class="post">
+                    <h3>Người đăng: ${post.username}</h3>
+                    <p>Nội dung: ${post.content}</p>
+                    <small>Saved at: ${post.saved_at}</small>
+                    <button onclick="deletePost(${post.saved_id})">Xóa</button>
                 </div>
-            `).join('');
+            `;
+            savedPostsContainer.innerHTML += postElement;
         });
+    })
+    .catch(error => console.error('Lỗi:', error));
+
 
     // Xóa bài viết
     window.deleteArticle = function (id) {

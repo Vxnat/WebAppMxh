@@ -81,8 +81,11 @@
             </aside>
         
             <main class="content">            
-                <h2>Tất cả</h2>
-                <div id="article-list"></div>
+                <h1>Danh sách bài viết đã lưu</h1>
+                <div id="savedPosts">
+                    <!-- Danh sách bài viết sẽ được hiển thị ở đây -->
+                </div>
+                    <?php include 'fetch.php'; ?>
                 
             </main>
         </div>

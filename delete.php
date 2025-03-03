@@ -1,19 +1,13 @@
 <?php
+ob_start();
 header("Content-Type: application/json");
 include 'connect.php';
 
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']); // Chắc chắn rằng ID là số nguyên
-    $sql = "DELETE FROM savedposts WHERE saved_id = $id";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Xóa thành công!";
-    } else {
-        echo "Lỗi khi xóa: " . $conn->error;
-    }
-} else {
-    echo "Thiếu ID để xóa.";
+if (isset($_POST['delete'])) {
+    $saved_id = $_POST['saved_id'];
+    $query = "DELETE FROM savedposts WHERE saved_id = $saved_id";
+    mysqli_query($conn, $query);
+    header("Location: index.php");
 }
-
-$conn->close();
+ob_end_flush();
 ?>
