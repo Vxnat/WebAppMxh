@@ -128,6 +128,9 @@ $(document).ready(function () {
   // Event để xóa media cho create post
   $(document).on('click', '.remove-media', function () {
     $(this).closest('.create__post-media_item').remove();
+    $('#create-post-video').val('');
+    $('#create-post-img').val('');
+    $('.file-comment').val('');
   });
 
   // Toggle Create Post Container
@@ -765,4 +768,18 @@ $(document).ready(function () {
   }
 
   fetchPost();
+
+  // Lấy danh sách các bài viết và bài chia sẻ của người dùng theo user_id
+  function fetchPostsAndShares(userId) {
+    $.ajax({
+      url: '../ajax/home/post-handler.php',
+      method: 'POST',
+      data: { fetchPostsAndShares: true, userId: userId },
+      success: function (data) {
+        $('#post-list-form').html(data);
+      },
+    });
+  }
+
+  // fetchPostsAndShares(1);
 });

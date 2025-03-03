@@ -1,8 +1,4 @@
 $(document).ready(function () {
-  // Chuyển hướng về trang HOME
-  $('#navbar-home').on('click', function () {
-    window.location.href = '../page/home.php';
-  });
   // Close dialog
   $(document).on('click', '#close-dialog', function () {
     $('.dialog-container').removeClass('active').empty();

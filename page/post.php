@@ -50,12 +50,12 @@
             <!-- Navbar Action -->
             <ul class="header__action-action_list">
                 <li class="header__action-action_item" id="navbar-home">
-                    <a style="background-color: #c9e2ff">
+                    <a href="home.php" style="background-color: #c9e2ff">
                         <i class="fas fa-home" style="color: #3080eb"></i>
                     </a>
                 </li>
                 <li class="header__action-action_item" id="navbar-chat">
-                    <a href="#">
+                    <a href="message.php">
                         <i class="far fa-comment"></i>
                     </a>
                 </li>

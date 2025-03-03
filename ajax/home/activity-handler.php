@@ -4,7 +4,8 @@
     // Fetch Activity
     if (isset($_POST["fetchActivity"])) { 
         // Chuẩn bị truy vấn
-        $user_id = $_SESSION['user_id']; // Giả sử bạn lưu user_id trong session
+        $user_id = $_SESSION['user_id'];
+        
         $query = "SELECT n.*, u.full_name AS sender_name, u.avatar AS sender_avatar 
                   FROM notifications n
                   LEFT JOIN Users u ON n.sender_id = u.user_id
