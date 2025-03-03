@@ -76,6 +76,63 @@ if (isset($_POST['getPersonChatList'])) {
     echo $response;
 }
 
+// Chức năng lấy danh sách các cuộc trò chuyện nhóm
+if (isset($_POST['getGroupChatList'])) {
+    // $current_user_id = $_SESSION['user_id']; // Lấy user_id từ session
+    $current_user_id = 1;
+
+    // Truy vấn lấy danh sách group chat mà user tham gia
+    $query = "
+        SELECT g.group_id, g.group_name, g.group_avatar, g.last_message, g.last_message_sender_id, g.last_message_time,
+               u.full_name AS last_sender_name
+        FROM GroupChats g
+        JOIN GroupMembers gm ON g.group_id = gm.group_id
+        LEFT JOIN Users u ON g.last_message_sender_id = u.user_id
+        WHERE gm.user_id = ?
+        ORDER BY g.last_message_time DESC"; // Sắp xếp theo tin nhắn mới nhất
+
+    // Chuẩn bị truy vấn
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $current_user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Xử lý kết quả và tạo HTML
+    $response = '';
+    if ($result->num_rows > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $group_id = $row['group_id'];
+            $group_name = htmlspecialchars($row['group_name']);
+            $group_avatar = $row['group_avatar'] ? $row['group_avatar'] : '../img/default-group.png';
+
+            // Hiển thị tin nhắn cuối cùng
+            $last_message_sender_name = $row['last_message_sender_id'] == $current_user_id ? "Bạn" : $row['last_sender_name'];
+            $last_message_display = $row['last_message'] ? $last_message_sender_name . ": " . $row['last_message'] : "No messages yet";
+
+            // Định dạng thời gian tin nhắn cuối
+            $last_message_time = $row['last_message_time'] ? formatLastMessageTime($row['last_message_time']) : '';
+
+            // Tạo HTML cho từng group chat
+            $response .= '
+                <li>
+                    <a href="#" data-conversation="#' . $group_id . '" data-group-chat="true">
+                        <img class="content-message-image" src="' . $group_avatar . '" alt="">
+                        <span class="content-message-info">
+                            <span class="content-message-name">' . $group_name . '</span>
+                            <span class="content-message-text">' . $last_message_display . '</span>
+                        </span>
+                        <span class="content-message-more">
+                            <div class="content-message-time">' . $last_message_time . '</div>
+                        </span>
+                    </a>
+                </li>
+            ';
+        }
+    }
+
+    echo $response;
+}
+
 // Định dạng thời gian cho tin nhắn gần đây 
 function formatLastMessageTime($timestamp)
 {

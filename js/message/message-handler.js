@@ -52,6 +52,20 @@ $(document).ready(function () {
   }
   getPersonChatList();
 
+  // Lấy các cuộc trò chuyện nhóm về
+  function getGroupChatList() {
+    $.ajax({
+      url: '../ajax/message/message-handler.php',
+      method: 'POST',
+      data: { getGroupChatList: true },
+      success: function (response) {
+        $('.group-chat').append(response);
+      },
+    });
+  }
+
+  getGroupChatList();
+
   // --> Chức năng chuyển qua trang chat khác
   // Chọn tất cả phần từ có thuộc tính data-conversation
   $(document).on('click', '[data-conversation]', function (e) {
