@@ -277,6 +277,7 @@ textarea::placeholder {
 
 .header__notify-img .avatar {
   width: 60px;
+  height: 60px;
   border-radius: 100%;
   background-color: #bcc0c4;
   overflow: hidden;
@@ -378,6 +379,12 @@ textarea::placeholder {
   top: 45px;
   right: 0;
   display: none;
+}
+
+.header__info .wrapper > a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
 }
 
 .header__info .wrapper.active {

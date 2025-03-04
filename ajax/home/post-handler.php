@@ -319,7 +319,7 @@
         
         -- Bài viết chia sẻ
         SELECT 
-            p.post_id,
+            s.share_id AS post_id,
             p.user_id,
             p.content,
             p.media_url,
@@ -392,7 +392,7 @@
                     }
                     $output .= "
                         <div class='post__box-emotion'>
-                            <div class='post__box-like'><i class='fas fa-heart' style='color: red'></i><span>$totalLikes</span></div>
+                            <div class='post__box-like'><i class='fas fa-heart' style='color: red'></i> <span>$totalLikes</span></div>
                             <div class='post__box-emotion_right'>
                                 <div class='post__box-comment'>$totalComments comments</div>
                                 <div class='post__box-share'>$totalShares shares</div>
@@ -411,7 +411,7 @@
 
                     // Bài viết chia sẻ
                     $output .= "
-                    <section class='post__box-post'>
+                    <section class='post__box-post' data-share-id='{$row['post_id']}'>
                         <div class='post__box-header'>
                             <div class='post__box-details'>
                                 <a href='$profileUrl'>
@@ -499,46 +499,79 @@
     // Show Menu Post
     if(isset($_POST['showMenuPost'])){
         $userId = $_SESSION['user_id'];
-        $postId = $_POST['postId'];
-
-        $checkQuery =" SELECT 
-            (SELECT 1 FROM posts WHERE post_id = ? AND user_id = ? LIMIT 1) AS is_owner,
-            (SELECT 1 FROM savedposts WHERE post_id = ? AND user_id = ? LIMIT 1) AS is_saved
-        ";
-        $stmt = $conn->prepare($checkQuery);
-        $stmt->bind_param('iiii', $postId, $userId, $postId, $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        $isOwner = $row['is_owner'];
-        $isSaved = $row['is_saved'];
+        $postId = $_POST['postId'] ?? null;
+        $shareId = $_POST['shareId'] ?? null;
 
         $output = '';
-        // Nếu là bài viết của người dùng hiện tại
-        if($isOwner){
-            $element = $isSaved ? '<i class=\'ri-bookmark-2-fill\'></i> <span>Hủy lưu bài viết</span>' : '<i class=\'ri-bookmark-fill\'></i> <span>Lưu bài viết</span>'; 
 
-            $output .= "
-                <div class='menu__post'>
-                    <ul class='menu__post-list'>
-                        <li class='menu__post-item save-post'> $element</li>
-                        <li class='menu__post-item edit-post'><i class='ri-pencil-fill'></i> <span>Chỉnh sửa bài viết</span></li>
-                        <li class='menu__post-item delete-post'><i class='ri-delete-bin-fill'></i> <span>Xóa bài viết</span></li>
-                    </ul>
-                </div>
+        // Nếu ko có shareId, đây là bài gốc
+        if($shareId == null){
+            $checkQuery =" SELECT 
+                (SELECT 1 FROM posts WHERE post_id = ? AND user_id = ? LIMIT 1) AS is_owner,
+                (SELECT 1 FROM savedposts WHERE post_id = ? AND user_id = ? LIMIT 1) AS is_saved
             ";
+            $stmt = $conn->prepare($checkQuery);
+            $stmt->bind_param('iiii', $postId, $userId, $postId, $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            $isOwner = $row['is_owner'];
+            $isSaved = $row['is_saved'];
+
+            // Nếu là bài viết của người dùng hiện tại
+            if($isOwner){
+                $element = $isSaved ? '<i class=\'ri-bookmark-2-fill\'></i> <span>Hủy lưu bài viết</span>' : '<i class=\'ri-bookmark-fill\'></i> <span>Lưu bài viết</span>'; 
+
+                $output .= "
+                    <div class='menu__post'>
+                        <ul class='menu__post-list'>
+                            <li class='menu__post-item save-post'> $element</li>
+                            <li class='menu__post-item edit-post'><i class='ri-pencil-fill'></i> <span>Chỉnh sửa bài viết</span></li>
+                            <li class='menu__post-item delete-post'><i class='ri-delete-bin-fill'></i> <span>Xóa bài viết</span></li>
+                        </ul>
+                    </div>
+                ";
+            }else{
+                $element = $isSaved ? '<i class=\'ri-bookmark-2-fill\'></i><span>Hủy lưu bài viết</span>' : '<i class=\'ri-bookmark-fill\'></i><span>Lưu bài viết</span>'; 
+                $output .= "
+                    <div class='menu__post'>
+                        <ul class='menu__post-list'>
+                            <li class='menu__post-item save-post'> $element</li>
+                        </ul>
+                    </div>
+                ";
+            }
         }else{
-            $element = $isSaved ? '<i class=\'ri-bookmark-2-fill\'></i><span>Hủy lưu bài viết</span>' : '<i class=\'ri-bookmark-fill\'></i><span>Lưu bài viết</span>'; 
-            $output .= "
-                <div class='menu__post'>
-                    <ul class='menu__post-list'>
-                        <li class='menu__post-item save-post'> $element</li>
-                    </ul>
-                </div>
+            // Nếu có shareId, đây là bài chia sẻ
+            // Kiểm tra quyền sở hữu bài chia sẻ
+            $checkQuery = "
+            SELECT 
+                (SELECT 1 FROM Shares WHERE share_id = ? AND user_id = ? LIMIT 1) AS is_owner_share
             ";
-        }
+            $stmt = $conn->prepare($checkQuery);
+            $stmt->bind_param('ii', $shareId, $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
 
+            $isOwnerShare = $row['is_owner_share'];
+
+            if ($isOwnerShare) {
+                $output .= "
+                    <div class='menu__post'>
+                        <ul class='menu__post-list'>
+                            <li class='menu__post-item edit-share'><i class='ri-pencil-fill'></i> <span>Chỉnh sửa</span></li>
+                            <li class='menu__post-item delete-share'><i class='ri-delete-bin-fill'></i> <span>Xóa</span></li>
+                        </ul>
+                    </div>
+                ";
+            } else {
+                // Nếu không phải chủ sở hữu bài chia sẻ, không hiển thị menu hoặc tùy chỉnh thêm
+                $output .= "<div class='menu__post'><ul class='menu__post-list'></ul></div>";
+            }
+        }
+        
         echo $output;
     }
 
@@ -601,7 +634,7 @@
             $row = $result->fetch_assoc(); // Lấy dữ liệu hàng đầu tiên
             echo json_encode([
                 "success" => true,
-                "response" => [$row]
+                "response" => $row
             ]);
         } else {
             echo json_encode([
@@ -776,17 +809,89 @@
         $stmt->execute();
 
         // Gửi thông báo cho chủ bài viết này
-        if($userId !== $ownerPostId){
-            $insertNotification = "INSERT INTO notifications (user_id, sender_id, notification_type, content)
-            VALUES (?, ?, 'share', ?)";
+        if($userId !== $postOwner){
+            $insertNotification = "INSERT INTO notifications (user_id, sender_id, notification_type, content,reference_id)
+            VALUES (?, ?, 'share', ? , ?)";
             $stmt = $conn->prepare($insertNotification);
             $notifContent = "đã chia sẻ bài viết của bạn: \"$postContentSnippet\"";
-            $stmt->bind_param("iis", $ownerPostId, $userId, $notifContent);
+            $stmt->bind_param("iisi", $postOwner, $userId, $notifContent, $postId);
             $stmt->execute();
         }
         
         echo json_encode(["success" => true, "message" => "Chia sẻ bài viết thành công!"]);
         exit();
+    }
+
+    // Show Edit Post
+    if (isset($_POST["showEditShare"])) {
+        $userId = $_SESSION["user_id"];
+        $shareId = $_POST["shareId"];
+    
+        $query = "SELECT s.content, u.user_id, u.full_name, u.avatar 
+                  FROM posts p
+                  JOIN users u ON u.user_id = p.user_id
+                  JOIN shares s ON s.post_id = p.post_id
+                  WHERE s.share_id = ? ";
+    
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i' , $shareId); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc(); 
+            echo json_encode([
+                "success" => true,
+                "response" => $row
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" => "Post not found."
+            ]);
+        }
+    }
+
+    // Confirm Edit Share Post
+    if (isset($_POST["editShare"])) {
+        
+        $userId = $_SESSION["user_id"];
+        $shareId = $_POST["shareId"];
+        $content = $_POST["content"];
+    
+        // Cập nhật nội dung và media nếu có thay đổi
+        $updateQuery = "UPDATE shares SET content = ? WHERE share_id = ? ;";
+        $stmt = $conn->prepare($updateQuery);
+        $stmt->bind_param("si", $content, $shareId);
+        $result = $stmt->execute();
+    
+        if ($result) {
+            echo json_encode([
+                "success" => true,
+                "shareId" => $shareId,
+                "content" => $content,
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "message" => "Failed to update the post.",
+            ]);
+        }
+        exit;
+    }
+
+    // Delete Share Post
+    if(isset($_POST["deleteShare"])) {
+        $shareId = $_POST["shareId"];
+
+        $deleteQuery = "DELETE FROM shares WHERE share_id = '$shareId' LIMIT 1";
+        $result = mysqli_query($conn, $deleteQuery);
+
+        if($result){
+            echo true;
+        }else{
+            echo false;
+        }
     }
 
     // Hàm lấy tổng số lượt like

@@ -394,12 +394,17 @@ $(document).ready(function () {
       }
     } else {
       const postId = self.closest('.post__box-post').data('post-id');
+      const shareId = self.closest('.post__box-post').data('share-id');
 
       // Gửi yêu cầu AJAX để lấy menu
       $.ajax({
         url: '../ajax/home/post-handler.php',
         method: 'POST',
-        data: { showMenuPost: true, postId: postId },
+        data: {
+          showMenuPost: true,
+          postId: postId || null,
+          shareId: shareId || null,
+        },
         success: function (data) {
           // Thêm menu vào DOM và hiển thị
           self.append(data);
@@ -459,9 +464,9 @@ $(document).ready(function () {
       data: { showEditPost: true, postId: postId },
       success: function (response) {
         try {
-          const parsedData = JSON.parse(response);
-          if (parsedData.success) {
-            const post = parsedData.response[0];
+          const data = JSON.parse(response);
+          if (data.success) {
+            const post = data.response;
             const mediaUrl = post.media_url || '';
             let mediaHtml = '';
 
@@ -690,8 +695,142 @@ $(document).ready(function () {
 
           // Kiểm tra nếu #post-modal đang hiển thị
           if ($('#post-modal').is(':visible')) {
-            $('#post-modal').hide(); // Hoặc .removeClass('active') nếu bạn dùng class 'active'
+            $('#post-modal').hide();
           }
+        } else {
+          alert('Something went wrong! Post could not be deleted.');
+        }
+      },
+      error: function () {
+        alert('Error occurred while deleting the post.');
+      },
+    });
+  });
+
+  // Chức năng chỉnh sửa bài chia sẻ
+  $(document).on('click', '.edit-share', function () {
+    const shareId = $(this).closest('.post__box-post').data('share-id');
+    const dialogForm = $('.dialog-container');
+
+    $.ajax({
+      url: '../ajax/home/post-handler.php',
+      method: 'POST',
+      data: { showEditShare: true, shareId: shareId },
+      success: function (response) {
+        try {
+          const data = JSON.parse(response);
+          if (data.success) {
+            const post = data.response;
+
+            const avatar = post.avatar ? post.avatar : '../img/default-avatar.png';
+
+            const html = `
+            <div class='dialog-wrapper' data-share-id='${shareId}'>
+              <section class="create__post-post">
+                <div class="post-title">
+                  <h3>Edit Share</h3>
+                  <div id="close-dialog">&times;</div>
+                </div>
+                <form method="post" id="creat__post-form">
+                  <div class="create__post-content">
+                    <img src="${avatar}" alt='User avatar'>
+                    <div class="create__post-details">
+                      <span>${post.full_name}</span>
+                    </div>
+                  </div>
+                  <textarea class="text-area" placeholder="What's on your mind, ${post.full_name}?" rows="5" required>${post.content}</textarea>
+                  <div class=\"emoji-icon\">
+                            <img src=\"../icon/smile.png\" alt=\"\" style=\"max-width:18px;\" class=\"post__emoji\">
+                            <div class=\"emoji-selector\">
+                                <div class='input-container'>
+                                    <input placeholder=\"Seach...\" />
+                                </div>
+                                <div class=\"emoji-loading\">🔄 Đang tải emoji...</div>
+                                <ul class=\"emoji-list\" id='emojiList'></ul>
+                            </div>
+                  </div>
+                  <button type="button" id="save-share-button">Save</button>
+                </form>
+              </section>
+            </div>`;
+
+            dialogForm.html(html).addClass('active');
+          } else {
+            alert('Failed to fetch post data!');
+          }
+        } catch (error) {
+          alert('Error parsing response data!');
+          console.error(error);
+        }
+      },
+      error: function () {
+        alert('An error occurred while processing your request.');
+      },
+    });
+  });
+
+  // Chức năng xác nhận lưu chỉnh sửa bài chia sẻ
+  $(document).on('click', '#save-share-button', function () {
+    const dialogWrapper = $(this).closest('.dialog-wrapper');
+    const shareId = dialogWrapper.data('share-id');
+    const content = dialogWrapper.find('.text-area').val();
+
+    $.ajax({
+      url: '../ajax/home/post-handler.php',
+      method: 'POST',
+      data: { editShare: true, shareId: shareId, content: content },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          // Cập nhật nội dung bài viết trên giao diện
+          $(`[data-share-id="${shareId}"] .post__box-text`).first().text(data.content);
+        } else {
+          alert(data.message || 'Failed to update the post.');
+        }
+      },
+      complete: function () {
+        clearCreatePost();
+      },
+      error: function () {
+        alert('An error occurred while processing your request.');
+      },
+    });
+  });
+
+  // Chức năng hiện thông báo về xóa bài chia sẻ
+  $(document).on('click', '.delete-share', function () {
+    const shareId = $(this).closest('.post__box-post').data('share-id');
+    const dialogForm = $('.dialog-container');
+    const html = `
+      <div class="dialog-wrapper" data-share-id = '${shareId}'>
+        <div class="dialog-header">
+          Delete your share?
+        </div>
+        <div class="dialog-content">Share will be deleted ?</div>
+        <div class="dialog-actions">
+          <button class="cancel-button">Cancel</button>
+          <button id="delete-share-btn">Delete</button>
+        </div>
+      </div>
+    `;
+    dialogForm.html(html);
+    dialogForm.addClass('active');
+  });
+
+  // Chức năng xác nhận xóa bài chia sẻ
+  // Submit Delete Post
+  $(document).on('click', '#delete-share-btn', function () {
+    const shareId = $(this).closest('.dialog-wrapper').data('share-id');
+    $.ajax({
+      url: '../ajax/home/post-handler.php',
+      method: 'POST',
+      data: { deleteShare: true, shareId: shareId },
+      success: function (data) {
+        // Kiểm tra nếu xóa thành công
+        if (data) {
+          // Xóa thẻ .post__box-post với id là shareId
+          $(`[data-share-id="${shareId}"]`).remove();
+          $('.dialog-container').removeClass('active').empty(); // Đóng hộp thoại sau khi xóa
         } else {
           alert('Something went wrong! Post could not be deleted.');
         }

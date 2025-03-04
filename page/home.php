@@ -16,7 +16,6 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/style.css" />
-    <link rel="stylesheet" href="../css/video.css" />
 </head>
 
 <body>
@@ -71,10 +70,12 @@
             <div class="header__info" data-user-id=<?=$_SESSION["user_id"] ?>>
                 <?=$logined ?>
                 <div class="wrapper">
-                    <div class="card">
-                        <img src=<?=$_SESSION['avatar'] ?> alt="">
-                        <span><?=$_SESSION['full_name'] ?></span>
-                    </div>
+                    <a href="profile.php?user_id=<?=$_SESSION['user_id'] ?>">
+                        <div class="card">
+                            <img src=<?=$_SESSION['avatar'] ?> alt="">
+                            <span><?=$_SESSION['full_name'] ?></span>
+                        </div>
+                    </a>
                     <ul class="action_list">
                         <a href="../page/setting.php">
                             <li class="action_item">
