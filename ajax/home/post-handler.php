@@ -924,7 +924,7 @@
                 </div>
                 <div class='comment__box' style='padding: 0 20px;'>
                     <div class='comment__box-wrapper'>
-                        <textarea type='text' class='comment__input' rows='2' cols='50' style='resize: none;' placeholder='Write a reply...'></textarea>
+                        <textarea type='text' class='comment__input' rows='2' cols='50' style='resize: none;' placeholder='Write a comment...'></textarea>
                         <div class=\"emoji-icon\">
                             <img src=\"../icon/smile.png\" alt=\"\" style=\"max-width:18px;\" class=\"post__emoji\">
                             <div class=\"emoji-selector\">

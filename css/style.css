@@ -534,13 +534,16 @@ textarea::placeholder {
 }
 
 .sidebar__infor-btn {
+  text-align: center;
+  text-decoration: none;
   background-color: #007bff;
   color: var(--white-color);
   border: none;
-  font-weight: 600;
-  padding: 15px 20px;
-  border-radius: 15px;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 7px;
   margin-top: 20px;
+  font-size: 15px;
   cursor: pointer;
 }
 

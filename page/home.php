@@ -77,21 +77,23 @@
                     </div>
                     <ul class="action_list">
                         <a href="../page/setting.php">
-                        <li class="action_item">
-                            <div style="display: flex; align-items: center;">
-                                <img src="../img/setting.png" alt="">
-                                <span>Settings & privacy</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </li>
+                            <li class="action_item">
+                                <div style="display: flex; align-items: center;">
+                                    <img src="../img/setting.png" alt="">
+                                    <span>Settings & privacy</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </li>
                         </a>
-                        <li class="action_item">
-                            <div style="display: flex; align-items: center;">
-                                <img src="../img/favorite.png" alt="">
-                                <span>Favorite</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </li>
+                        <a href="favorite.php">
+                            <li class="action_item">
+                                <div style="display: flex; align-items: center;">
+                                    <img src="../img/favorite.png" alt="">
+                                    <span>Favorite</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </li>
+                        </a>
                         <li class="action_item" id="navbar-logout">
                             <div style="display: flex; align-items: center;">
                                 <img src="../img/logout.png" alt="">

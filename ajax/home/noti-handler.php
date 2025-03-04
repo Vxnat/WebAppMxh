@@ -107,7 +107,7 @@
         if ($noti_type == 'like' || $noti_type == 'comment' || $noti_type == 'share') {
         $link = "../page/post.php?id=$reference_id"; // Chuyển đến bài viết
         } elseif ($noti_type == 'friend_request' || $noti_type == 'friend_request_accepted' || $noti_type == 'friend_request_rejected') {
-            $link = "../page/profile.php?id=$reference_id"; // Chuyển đến trang cá nhân
+            $link = "../page/profile.php?user_id=$reference_id"; // Chuyển đến trang cá nhân
         }
         
         // Bọc `<a>` cho tất cả thông báo, bao gồm cả friend_request

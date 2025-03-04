@@ -112,7 +112,7 @@
     // Fetch Info User
     if(isset($_POST["fetchInfoUser"])){
         $user_id = $_SESSION['user_id']; // ID người dùng hiện tại
-        $query = "SELECT full_name,avatar,bg_image,
+        $query = "SELECT user_id, full_name,avatar,bg_image,
         (SELECT COUNT(*) FROM posts WHERE user_id = $user_id) AS total_posts,
         (SELECT COUNT(*) FROM Friendships 
         WHERE (user_id = $user_id OR friend_id = $user_id) 
@@ -130,6 +130,7 @@
             $total_posts = $row['total_posts'];
             $total_friends = $row['total_friends'];
             $total_days = $row['total_days'];
+            $profileUrl = "profile.php?user_id=" . $row['user_id']; // đường link đến profile
             
             $output .= '
                         <div class="sidebar__info-image">
@@ -158,7 +159,7 @@
                                     <span class="name">Days</span>
                                 </li>
                             </ul>
-                            <button type="button" class="sidebar__infor-btn">My Profile</button>
+                            <a href='.$profileUrl.' class="sidebar__infor-btn">My Profile</a>
                         </div>
             ';
         }
