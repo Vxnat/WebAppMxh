@@ -82,6 +82,20 @@
         exit();
     }
 
+    // Update Last Login
+    if (isset($_POST['updateLastLogin']) && isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        $query = "UPDATE users SET last_login = NOW() WHERE user_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $userId);
+        if ($stmt->execute()) {
+            echo "success";
+        } else {
+            echo "error";
+        }
+        exit();
+    }
+
     // Logout
     if (isset($_POST['logout'])) {
         session_destroy(); // Xóa toàn bộ session

@@ -806,7 +806,8 @@ textarea::placeholder {
   color: #a3a3a3;
 }
 
-.sidebar__wrapper-item .toggle-add-friend {
+.sidebar__wrapper-item .toggle-add-friend,
+.sidebar__wrapper-item .remove-shortcut {
   position: absolute;
   right: 0;
   border: none;

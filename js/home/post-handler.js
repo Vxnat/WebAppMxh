@@ -894,31 +894,81 @@ $(document).ready(function () {
 
   getPost();
 
-  // Get Posts
-  function fetchPost() {
+  // Các biến dùng để lấy bài viết về
+  let lastCreatedAt = null;
+  const limit = 10;
+  let isLoading = false;
+  let hasMore = true;
+
+  // Hàm fetchData tổng quát
+  function fetchData(action, userId = null, append = false) {
+    if (isLoading || !hasMore) return;
+
+    isLoading = true;
+
+    const requestData = {
+      limit: limit,
+      last_created_at: lastCreatedAt,
+    };
+
+    if (action === 'fetchPost') {
+      requestData.fetchPost = true;
+    } else if (action === 'fetchPostsAndShares') {
+      requestData.fetchPostsAndShares = true;
+      requestData.userId = userId;
+    }
+
     $.ajax({
       url: '../ajax/home/post-handler.php',
       method: 'POST',
-      data: { fetchPost: true },
-      success: function (data) {
-        $('#post-list-form').html(data);
+      data: requestData,
+      success: function (response) {
+        const data = JSON.parse(response);
+        // Thêm bài viết vào danh sách nếu append = null, còn nếu append = true thì thêm vào cuối form
+        if (append) {
+          $('#post-list-form').append(data.html);
+        } else {
+          $('#post-list-form').html(data.html);
+        }
+        lastCreatedAt = data.last_created_at;
+        hasMore = data.has_more;
+        isLoading = false;
+      },
+      error: function () {
+        isLoading = false;
       },
     });
+  }
+
+  // Get Posts
+  function fetchPost(append = null) {
+    lastCreatedAt = null;
+    hasMore = true;
+    fetchData('fetchPost');
   }
 
   fetchPost();
 
   // Lấy danh sách các bài viết và bài chia sẻ của người dùng theo user_id
   function fetchPostsAndShares(userId) {
-    $.ajax({
-      url: '../ajax/home/post-handler.php',
-      method: 'POST',
-      data: { fetchPostsAndShares: true, userId: userId },
-      success: function (data) {
-        $('#post-list-form').html(data);
-      },
-    });
+    lastCreatedAt = null;
+    hasMore = true;
+    fetchData('fetchPostsAndShares', userId);
   }
 
-  // fetchPostsAndShares(1);
+  // Hiển thị thêm bài viết khi người dùng lướt đến cuối
+  $(document).on('scroll', function () {
+    // Nếu người dùng đang xem trang cuối cùng của trang web thì thực hiện lấy bài viết tiếp theo
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+      const action = window.location.pathname.includes('profile.php') ? 'fetchPostsAndShares' : 'fetchPost';
+      const userId = action === 'fetchPostsAndShares' ? getUserIdFromUrl() : null; // Lấy userId từ URL nếu cần
+      fetchData(action, userId, true); // Tải thêm khi cuộn
+    }
+  });
+
+  // Hàm hỗ trợ lấy userId từ URL (nếu cần)
+  // function getUserIdFromUrl() {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   return urlParams.get('user_id');
+  // }
 });

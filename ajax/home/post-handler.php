@@ -3,6 +3,8 @@
     // Fetch Post
     if(isset($_POST["fetchPost"])){
         $userId = $_SESSION['user_id']; // ID người dùng hiện tại
+        $limit = isset($_POST["limit"]) ? $_POST["limit"] : 10;
+        $last_created_at = isset($_POST["last_created_at"]) ? $_POST["last_created_at"] : null;
     
         // Truy vấn SQL để lấy thông tin bài viết cùng số lượt like, comment và trạng thái "đã like"
         $postQuery = "
@@ -10,6 +12,9 @@
             p.*,
             u.full_name,
             u.avatar,
+            p.created_at AS time,
+            'original' AS post_type,
+            '' AS share_content,
             (SELECT COUNT(*) FROM likes WHERE post_id = p.post_id) AS total_likes,
             (SELECT COUNT(*) FROM comments WHERE post_id = p.post_id) AS total_comments,
             (SELECT COUNT(*) FROM shares WHERE post_id = p.post_id) AS total_shares,
@@ -18,108 +23,50 @@
             ) THEN 1 ELSE 0 END AS user_liked
         FROM posts p
         INNER JOIN users u ON u.user_id = p.user_id
-        ORDER BY p.created_at DESC
         ";
+
+        if($last_created_at){
+            $postQuery .= " WHERE p.created_at < ?";
+            $postQuery .= " ORDER BY p.created_at DESC LIMIT $limit";
+            $stmt = $conn->prepare($postQuery);
+            $stmt->bind_param('is',$user_id , $last_created_at);
+        }else{
+            $postQuery.= " ORDER BY p.created_at DESC LIMIT $limit";
+            $stmt = $conn->prepare($postQuery);
+            $stmt->bind_param('i', $userId);
+        }
     
-        $stmt = $conn->prepare($postQuery);
-        $stmt->bind_param('i', $userId); // Gán user_id vào truy vấn
         $stmt->execute();
         $result = $stmt->get_result();
         $output = '';
+        // Mảng để lưu bài viết cuối cùng
+        $lastPost = null;
     
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $username = htmlspecialchars($row['full_name']);
-                $avatar = !empty($row['avatar']) ? $row['avatar'] : '../img/default-avatar.png';
-                $content = htmlspecialchars($row['content']);
-                $maxLength = 300;
-                $createdAt = formatTime($row['created_at']);
-                $media = !empty($row['media_url']) ? $row['media_url'] : '';
-    
-                // Số lượng like và comment
-                $totalLikes = intval($row['total_likes']);
-                $totalComments = intval($row['total_comments']);
-                $totalShares = intval($row['total_shares']);
-    
-                // Kiểm tra trạng thái đã like
-                $userLiked = intval($row['user_liked']) === 1; // true nếu đã like
-                $likeIcon = $userLiked ? 'fas fa-heart liked' : 'far fa-heart'; // Đổi icon nếu liked
-
-                $profileUrl = "profile.php?user_id=" . $row['user_id']; // đường link đến profile
-    
-                // Hiển thị bài viết
-                $output .= "
-                <section class='post__box-post' data-post-id=".$row['post_id'].">
-                    <div class='post__box-header'>
-                        <div class='post__box-details'>
-                            <a href='$profileUrl'>
-                                <img src='$avatar' alt='$username'>
-                            </a>
-                            <div class='post__box-info'>
-                            <a href='$profileUrl'>
-                                <span>$username</span>
-                            </a>
-                                <div>$createdAt</div>
-                            </div>
-                        </div>
-                        <div class='menu-btn'>
-                            <span><i class='ri-more-line'></i></span>
-                        </div>
-                    </div>";
-                // Hiển thị nút Xem thêm nếu Content quá dài
-                if(mb_strlen($content) > $maxLength){
-                    $contentSnippet = mb_substr($content, 0, $maxLength) . "...";
-                    $output .= "
-                    <div class='post__box-text' data-full-content='$content'>
-                        $contentSnippet
-                    </div>
-                    <span class='read-more'>Xem thêm</span>";
-                }else{
-                    $output .= "<div class='post__box-text'>$content</div>"; // Hiển thị đầy đủ nếu ngắn
-                }
-    
-                // Hiển thị media
-                if (!empty($media)) {
-                    $fileExtension = strtolower(pathinfo($media, PATHINFO_EXTENSION));
-                    if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
-                        $output .= "<div class='post__box-media_list'><img src='$media' alt='Post Media'></div>";
-                    } elseif (in_array($fileExtension, ['mp4', 'webm', 'ogg'])) {
-                        // $videoHtml = renderCustomVideoPlayer($media);
-                        $output .= "
-                        <div class='post__box-media_list'>
-                        <video src='$media' controls type='video/$fileExtension' muted />
-                        </div>";
-                    }
-                }
-    
-                // Hiển thị số lượt like và comment
-                $output .= "
-                        <div class='post__box-emotion'>
-                            <div class='post__box-like'>
-                                <i class='fas fa-heart' style='color: red'></i>
-                                <span>$totalLikes</span>
-                            </div>
-                            <div class='post__box-emotion_right'>
-                                <div class='post__box-comment'>$totalComments comments</div>
-                                <div class='post__box-share'>$totalShares shares</div>
-                            </div>
-                        </div>
-                        <ul class='post__box-interaction_list'>
-                            <li class='post__box-interaction_item like-btn'>
-                                <span><i class='$likeIcon'></i> Like</span>
-                            </li>
-                            <li class='post__box-interaction_item comment-btn'>
-                                <span><i class='far fa-comment'></i> Comment</span>
-                            </li>
-                            <li class='post__box-interaction_item share-btn'>
-                                <span><i class='far fa-share-square'></i> Share</span>
-                            </li>
-                        </ul>
-                    </div>
-                    </section>";
+                $output .= renderPost($row, $userId);
+                // Gán bài viết cuối cùng
+                $lastPost = $row;
             }
+            
         }
-        echo $output;
+
+        $hasMore = false;
+        // Kiểm tra nếu còn bài viết nào để hiển thị
+        if($lastPost){
+            $checkQuery = "SELECT 1 FROM posts WHERE created_at < ? LIMIT 1";
+            $stmt = $conn->prepare($checkQuery);
+            $stmt->bind_param("s", $lastPost['created_at']);
+            $stmt->execute();
+            $checkResult = $stmt->get_result();
+            $hasMore = $checkResult->num_rows > 0;
+        }
+        
+        echo json_encode([
+            'last_created_at' => $lastPost ? $lastPost['created_at'] : $last_created_at,
+            'has_more'=> $hasMore,
+            'html' => $output,
+        ]);
     }
 
     // Get Post By ID
@@ -292,190 +239,200 @@
     // Get Post And Share by ID
     if(isset($_POST['fetchPostsAndShares'])){
         $userId = $_POST['userId'];
+        $currentUserId = $_SESSION['user_id'];
+        $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 10;
+        $lastCreatedAt = isset($_POST['last_created_at']) ? $_POST['last_created_at'] : null;
 
         $query = "
-        -- Bài viết gốc
-        SELECT 
-            p.post_id,
-            p.user_id,
-            p.content,
-            p.media_url,
-            p.created_at AS time,
-            '' AS share_content,
-            'original' AS post_type,
-            u.full_name,
-            u.avatar,
-            (SELECT COUNT(*) FROM likes WHERE post_id = p.post_id) AS total_likes,
-            (SELECT COUNT(*) FROM comments WHERE post_id = p.post_id) AS total_comments,
-            (SELECT COUNT(*) FROM shares WHERE post_id = p.post_id) AS total_shares,
-            CASE WHEN EXISTS (
-                SELECT 1 FROM likes WHERE post_id = p.post_id AND user_id = ?
-            ) THEN 1 ELSE 0 END AS user_liked
-        FROM Posts p
-        INNER JOIN Users u ON u.user_id = p.user_id
-        WHERE p.user_id = ?
-        
-        UNION
-        
-        -- Bài viết chia sẻ
-        SELECT 
-            s.share_id AS post_id,
-            p.user_id,
-            p.content,
-            p.media_url,
-            s.shared_at AS time,
-            s.content AS share_content,
-            'shared' AS post_type,
-            u.full_name,
-            u.avatar,
-            0 AS total_likes, -- Không hiển thị cho bài chia sẻ
-            0 AS total_comments, -- Không hiển thị cho bài chia sẻ
-            0 AS total_shares, -- Không hiển thị cho bài chia sẻ
-            0 AS user_liked -- Không hiển thị cho bài chia sẻ
-        FROM Shares s
-        INNER JOIN Posts p ON p.post_id = s.post_id
-        INNER JOIN Users u ON u.user_id = p.user_id
-        WHERE s.user_id = ?
-        
-        ORDER BY time DESC";
+            -- Bài viết gốc
+            SELECT 
+                p.post_id,
+                p.user_id,
+                p.content,
+                p.media_url,
+                p.created_at AS time,
+                '' AS share_content,
+                'original' AS post_type,
+                u.full_name,
+                u.avatar,
+                (SELECT COUNT(*) FROM likes WHERE post_id = p.post_id) AS total_likes,
+                (SELECT COUNT(*) FROM comments WHERE post_id = p.post_id) AS total_comments,
+                (SELECT COUNT(*) FROM shares WHERE post_id = p.post_id) AS total_shares,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM likes WHERE post_id = p.post_id AND user_id = ?
+                ) THEN 1 ELSE 0 END AS user_liked
+            FROM Posts p
+            INNER JOIN Users u ON u.user_id = p.user_id
+            WHERE p.user_id = ?
+        ";
 
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param('iii', $userId, $userId, $userId);
+        if ($lastCreatedAt) {
+            $query .= " AND p.created_at < ?";
+        }
+
+        $query .= "
+            UNION ALL
+            
+            -- Bài viết chia sẻ
+            SELECT 
+                s.share_id AS post_id,
+                p.user_id,
+                p.content,
+                p.media_url,
+                s.shared_at AS time,
+                s.content AS share_content,
+                'shared' AS post_type,
+                u.full_name,
+                u.avatar,
+                0 AS total_likes, -- Không hiển thị cho bài chia sẻ
+                0 AS total_comments, -- Không hiển thị cho bài chia sẻ
+                0 AS total_shares, -- Không hiển thị cho bài chia sẻ
+                0 AS user_liked -- Không hiển thị cho bài chia sẻ
+            FROM Shares s
+            INNER JOIN Posts p ON p.post_id = s.post_id
+            INNER JOIN Users u ON u.user_id = p.user_id
+            WHERE s.user_id = ?
+        ";
+
+        if ($lastCreatedAt) {
+            $query .= " AND s.shared_at < ?";
+        }
+
+        $query .= " ORDER BY time DESC LIMIT ?";
+
+        if ($lastCreatedAt) {
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('iisisi', $currentUserId, $userId, $lastCreatedAt, $userId, $lastCreatedAt, $limit);
+        } else {
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param('iiii', $currentUserId, $userId, $userId, $limit);
+        }
+        
         $stmt->execute();
         $result = $stmt->get_result();
         $output = '';
+        $lastPost = null;
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $username = htmlspecialchars($row['full_name']);
-                $avatar = !empty($row['avatar']) ? $row['avatar'] : '../img/default-avatar.png';
-                $content = htmlspecialchars($row['content']);
-                $maxLength = 300;
-                $time = formatTime($row['time']);
-                $media = !empty($row['media_url']) ? $row['media_url'] : '';
-                $profileUrl = "profile.php?user_id=" . $row['user_id'];
-                $postType = $row['post_type'];
+                $output .= renderPost($row, $currentUserId);
+                $lastPost = $row;
+            }
+        }
 
-                if ($postType === 'original') {
-                    // Bài viết gốc
-                    $totalLikes = intval($row['total_likes']);
-                    $totalComments = intval($row['total_comments']);
-                    $totalShares = intval($row['total_shares']);
-                    $userLiked = intval($row['user_liked']) === 1;
-                    $likeIcon = $userLiked ? 'fas fa-heart liked' : 'far fa-heart';
+        $hasMore = false;
+        if ($lastPost) {
+            $checkMoreQuery = "
+                SELECT EXISTS (
+                    SELECT 1 FROM Posts WHERE user_id = ? AND created_at < ?
+                    UNION
+                    SELECT 1 FROM Shares WHERE user_id = ? AND shared_at < ?
+                    LIMIT 1
+                ) AS has_more";
+            $checkStmt = $conn->prepare($checkMoreQuery);
+            $checkStmt->bind_param('isis', $userId, $lastPost['time'], $userId, $lastPost['time']);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result()->fetch_assoc();
+            $hasMore = $checkResult['has_more'] == 1;
+        } elseif (!$lastCreatedAt) {
+            $hasMore = $result->num_rows >= $limit;
+        }
 
-                    $output .= "
-                    <section class='post__box-post' data-post-id='{$row['post_id']}'>
-                        <div class='post__box-header'>
-                            <div class='post__box-details'>
-                                <a href='$profileUrl'><img src='$avatar' alt='$username'></a>
-                                <div class='post__box-info'>
-                                    <a href='$profileUrl'><span>$username</span></a>
-                                    <div>$time</div>
-                                </div>
-                            </div>
-                            <div class='menu-btn'><span><i class='ri-more-line'></i></span></div>
-                        </div>";
-                    if (mb_strlen($content) > $maxLength) {
-                        $contentSnippet = mb_substr($content, 0, $maxLength) . "...";
-                        $output .= "<div class='post__box-text' data-full-content='$content'>$contentSnippet</div><span class='read-more'>Xem thêm</span>";
-                    } else {
-                        $output .= "<div class='post__box-text'>$content</div>";
-                    }
-                    if (!empty($media)) {
-                        $fileExtension = strtolower(pathinfo($media, PATHINFO_EXTENSION));
-                        if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
-                            $output .= "<div class='post__box-media_list'><img src='$media' alt='Post Media'></div>";
-                        } elseif (in_array($fileExtension, ['mp4', 'webm', 'ogg'])) {
-                            $output .= "<div class='post__box-media_list'><video src='$media' controls type='video/$fileExtension' muted /></div>";
-                        }
-                    }
-                    $output .= "
-                        <div class='post__box-emotion'>
-                            <div class='post__box-like'><i class='fas fa-heart' style='color: red'></i> <span>$totalLikes</span></div>
-                            <div class='post__box-emotion_right'>
-                                <div class='post__box-comment'>$totalComments comments</div>
-                                <div class='post__box-share'>$totalShares shares</div>
-                            </div>
-                        </div>
-                        <ul class='post__box-interaction_list'>
-                            <li class='post__box-interaction_item like-btn'><span><i class='$likeIcon'></i> Like</span></li>
-                            <li class='post__box-interaction_item comment-btn'><span><i class='far fa-comment'></i> Comment</span></li>
-                            <li class='post__box-interaction_item share-btn'><span><i class='far fa-share-square'></i> Share</span></li>
-                        </ul>
-                    </div>
-                    </section>";
-                } else {
+        echo json_encode([
+            'html' => $output,
+            'last_created_at' => $lastPost ? $lastPost['time'] : $lastCreatedAt,
+            'has_more' => $hasMore
+        ]);
+    }
 
-                    $shareContent = $row['share_content'];
+    // Hàm renderPost
+    function renderPost($row,$currentUserId){
+        $username = htmlspecialchars($row['full_name']);
+        $avatar = !empty($row['avatar']) ? $row['avatar'] : '../img/default-avatar.png';
+        $content = htmlspecialchars($row['content']);
+        $maxLength = 300;
+        $time = formatTime($row['time']);
+        $media = !empty($row['media_url']) ? $row['media_url'] : '';
+        $profileUrl = "profile.php?user_id=" . $row['user_id'];
+        $postType = $row['post_type'];
+        $output = '';
 
-                    // Bài viết chia sẻ
-                    $output .= "
-                    <section class='post__box-post' data-share-id='{$row['post_id']}'>
-                        <div class='post__box-header'>
-                            <div class='post__box-details'>
-                                <a href='$profileUrl'>
-                                    <img src='$avatar' alt='$username' />
-                                </a>
-                                <div class='post__box-info'>
-                                    <a href='$profileUrl'>
-                                        <span>$username</span>
-                                    </a>
-                                    <div>$time (Đã chia sẻ)</div>
-                                </div>
-                            </div>
-                            <div class='menu-btn'>
-                                <span><i class='ri-more-line'></i></span>
-                            </div>
-                        </div>
-                        <div class='post__box-content'>";
-                        if(mb_strlen($shareContent) > $maxLength){
-                            $contentSnippet = mb_substr($shareContent,0,$maxLength) . "...";
-                            $output .= "<p class='post__box-text' data-full-content='$shareContent'>$contentSnippet</p>
-                                <span class='read-more'>Xem thêm</span>";
-                        }else{
-                            $output .= "<p class='post__box-text'>$shareContent</p>";
-                        }
-                        $output .= "<div class='post__box-media_list' style='margin: 0'>";
-                    if (!empty($media)) {
-                        $fileExtension = strtolower(pathinfo($media, PATHINFO_EXTENSION));
-                        if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
-                            $output .= "<img src='$media' alt='Post Media' />";
-                        } elseif (in_array($fileExtension, ['mp4', 'webm', 'ogg'])) {
-                            $output .= "<video src='$media' controls type='video/$fileExtension' muted />";
-                        }
-                    }
-                    $output .= "
-                            </div>
-                            <div class='post__box-details' style='margin: 0 10px'>
-                                <a href='$profileUrl'>
-                                    <img src='$avatar' alt='$username' />
-                                </a>
-                                <div class='post__box-info'>
-                                    <a href='$profileUrl'>
-                                        <span>$username</span>
-                                    </a>
-                                    <div>$time</div>
-                                </div>
-                            </div>";
-                    // Thêm nút "Xem thêm" cho nội dung chia sẻ
-                    if (mb_strlen($content) > $maxLength) {
-                        $contentSnippet = mb_substr($content, 0, $maxLength) . "...";
-                        $output .= "
-                        <p class='post__box-text' data-full-content='$content'>$contentSnippet</p>
-                        <span class='read-more'>Xem thêm</span>";
-                    } else {
-                        $output .= "<p class='post__box-text'>$content</p>";
-                    }
-                    $output .= "
-                        </div>
-                    </section>";
+        if ($postType === 'original') {
+            $totalLikes = intval($row['total_likes']);
+            $totalComments = intval($row['total_comments']);
+            $totalShares = intval($row['total_shares']);
+            $userLiked = intval($row['user_liked']) === 1;
+            $likeIcon = $userLiked ? 'fas fa-heart liked' : 'far fa-heart';
+
+            $output .= "<section class='post__box-post' data-post-id='{$row['post_id']}'>";
+            $output .= "<div class='post__box-header'><div class='post__box-details'>";
+            $output .= "<a href='$profileUrl'><img src='$avatar' alt='$username'></a>";
+            $output .= "<div class='post__box-info'><a href='$profileUrl'><span>$username</span></a><div>$time</div></div>";
+            $output .= "</div><div class='menu-btn'><span><i class='ri-more-line'></i></span></div></div>";
+            
+            if (mb_strlen($content) > $maxLength) {
+                $contentSnippet = mb_substr($content, 0, $maxLength) . "...";
+                $output .= "<div class='post__box-text' data-full-content='$content'>$contentSnippet</div><span class='read-more'>Xem thêm</span>";
+            } else {
+                $output .= "<div class='post__box-text'>$content</div>";
+            }
+            
+            if (!empty($media)) {
+                $fileExtension = strtolower(pathinfo($media, PATHINFO_EXTENSION));
+                if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
+                    $output .= "<div class='post__box-media_list'><img src='$media' alt='Post Media'></div>";
+                } elseif (in_array($fileExtension, ['mp4', 'webm', 'ogg'])) {
+                    $output .= "<div class='post__box-media_list'><video src='$media' controls type='video/$fileExtension' muted /></div>";
                 }
             }
+            
+            $output .= "<div class='post__box-emotion'><div class='post__box-like'><i class='fas fa-heart' style='color: red'></i> <span>$totalLikes</span></div>";
+            $output .= "<div class='post__box-emotion_right'><div class='post__box-comment'>$totalComments comments</div>";
+            $output .= "<div class='post__box-share'>$totalShares shares</div></div></div>";
+            $output .= "<ul class='post__box-interaction_list'><li class='post__box-interaction_item like-btn'><span><i class='$likeIcon'></i> Like</span></li>";
+            $output .= "<li class='post__box-interaction_item comment-btn'><span><i class='far fa-comment'></i> Comment</span></li>";
+            $output .= "<li class='post__box-interaction_item share-btn'><span><i class='far fa-share-square'></i> Share</span></li></ul>";
+            $output .= "</div></section>";
         } else {
-            $output .= "<p>Không có bài viết nào.</p>";
+            $shareContent = htmlspecialchars($row['share_content']);
+            $output .= "<section class='post__box-post' data-share-id='{$row['post_id']}'>";
+            $output .= "<div class='post__box-header'><div class='post__box-details'>";
+            $output .= "<a href='$profileUrl'><img src='$avatar' alt='$username' /></a>";
+            $output .= "<div class='post__box-info'><a href='$profileUrl'><span>$username</span></a><div>$time (Đã chia sẻ)</div></div>";
+            $output .= "</div><div class='menu-btn'><span><i class='ri-more-line'></i></span></div></div>";
+            $output .= "<div class='post__box-content'>";
+            
+            if (mb_strlen($shareContent) > $maxLength) {
+                $contentSnippet = mb_substr($shareContent, 0, $maxLength) . "...";
+                $output .= "<p class='post__box-text' data-full-content='$shareContent'>$contentSnippet</p><span class='read-more'>Xem thêm</span>";
+            } else {
+                $output .= "<p class='post__box-text'>$shareContent</p>";
+            }
+            
+            $output .= "<div class='post__box-media_list' style='margin: 0'>";
+            if (!empty($media)) {
+                $fileExtension = strtolower(pathinfo($media, PATHINFO_EXTENSION));
+                if (in_array($fileExtension, ['jpg', 'jpeg', 'png'])) {
+                    $output .= "<img src='$media' alt='Post Media' />";
+                } elseif (in_array($fileExtension, ['mp4', 'webm', 'ogg'])) {
+                    $output .= "<video src='$media' controls type='video/$fileExtension' muted />";
+                }
+            }
+            $output .= "</div>";
+            $output .= "<div class='post__box-details' style='margin: 0 10px'>";
+            $output .= "<a href='$profileUrl'><img src='$avatar' alt='$username' /></a>";
+            $output .= "<div class='post__box-info'><a href='$profileUrl'><span>$username</span></a><div>$time</div></div></div>";
+            
+            if (mb_strlen($content) > $maxLength) {
+                $contentSnippet = mb_substr($content, 0, $maxLength) . "...";
+                $output .= "<p class='post__box-text' data-full-content='$content'>$contentSnippet</p><span class='read-more'>Xem thêm</span>";
+            } else {
+                $output .= "<p class='post__box-text'>$content</p>";
+            }
+            $output .= "</div></section>";
         }
-        echo $output;
+        return $output;
+
     }
 
     // Create Post

@@ -35,6 +35,24 @@ $(document).ready(function () {
   }
 
   fetchInfoUser();
+
+  // Hàm cập nhật last_login
+  function updateLastLogin() {
+    $.ajax({
+      url: '../ajax/home/auth-handler.php',
+      method: 'POST',
+      data: { updateLastLogin: true },
+      success: function (response) {
+        console.log('Last login updated:', response); // Debug (có thể bỏ)
+      },
+    });
+  }
+
+  // Gọi ngay khi trang tải (cập nhật lần đầu)
+  updateLastLogin();
+
+  // Cập nhật định kỳ mỗi 5 phút (300000ms)
+  setInterval(updateLastLogin, 300000);
 });
 
 // Tự động phát video khi video nằm ở nửa khung hình máy tính
