@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saved Items</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="fetch.css">
     <script src="app.js" defer></script>
-    
+
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <div class="header__action">
                 <div class="header__action-logo">
-                    <img src="https://images-platform.99static.com//eMcLXWfD7Bjw35rfjApyxx4YXMI=/416x164:1061x809/fit-in/500x500/99designs-contests-attachments/65/65104/attachment_65104401" alt="" />
+                    <img src="https://images-platform.99static.com//eMcLXWfD7Bjw35rfjApyxx4YXMI=/416x164:1061x809/fit-in/500x500/99designs-contests-attachments/65/65104/attachment_65104401"
+                        alt="" />
                     <span>Peace</span>
                 </div>
                 <div class="header__action-search">
@@ -46,7 +50,7 @@
                         </div>
                     </li>
                 </ul>
-                
+
             </div>
             <button class="avatar-btn" id="avatar-btn">
                 <img src="img/tải xuống.jpg" alt="Avatar">
@@ -77,19 +81,18 @@
                         <span>Chỉ mình tôi</span>
                     </div>
                 </a>
-                <a href="create.html"><button class="create-collection">+ Tạo bộ sưu tập mới</button></a>
             </aside>
-        
-            <main class="content">            
+
+            <main class="content">
                 <h1>Danh sách bài viết đã lưu</h1>
-                <div id="savedPosts">
-                    <!-- Danh sách bài viết sẽ được hiển thị ở đây -->
-                </div>
+                <ul id="saved-posts">
                     <?php include 'fetch.php'; ?>
-                
+                </ul>
+
             </main>
         </div>
     </div>
-    
+
 </body>
+
 </html>

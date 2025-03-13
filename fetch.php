@@ -1,41 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
 <?php
 ob_start();
 include 'connect.php';
 
-$query = "SELECT savedposts.saved_id, savedposts.post_id, savedposts.saved_at, users.full_name, posts.content 
+$query = "SELECT savedposts.saved_id, savedposts.post_id, savedposts.saved_at, users.full_name, posts.content , posts.media_url
           FROM savedposts 
           JOIN posts ON savedposts.post_id = posts.post_id 
           JOIN users ON posts.user_id = users.user_id 
           ORDER BY savedposts.saved_at DESC";
 
 $result = mysqli_query($conn, $query);
+$output = '';
 
-if ($result && mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<div class='saved-item'>";
-        echo "<h3>Nội dung bài viết: " . htmlspecialchars($row['content']) . "</h3>";
-        echo "<p>Người đăng: " . htmlspecialchars($row['full_name']) . "</p>";
-        echo "<p>Ngày lưu: " . htmlspecialchars($row['saved_at']) . "</p>";
-        echo "<form method='POST' action='delete.php'>";
-        echo "<input type='hidden' name='saved_id' value='" . htmlspecialchars($row['saved_id']) . "'>";
-        echo "<button type='submit' name='delete'>Xoá</button>";
-        echo "<button type='submit' name='delete'>Xem thêm</button>";
-        echo "</form>";
-        echo "</div>";
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $content = htmlspecialchars($row['content'], ENT_QUOTES, 'UTF-8');
+        $short_content = (mb_strlen($content) > 200) 
+            ? mb_substr($content, 0, 200) . '...' 
+            : $content;
+        $media_item = '';
+        if (!empty($row['media_url'])) {
+            $type = strtolower(pathinfo($row['media_url'], PATHINFO_EXTENSION));
+            in_array($type, ['jpg', 'jpeg', 'png'])
+            ? $media_item = '<div class="post-image"><img src='.$row['media_url'].' alt="null" loading="lazy"></div>'
+            : $media_item = '<div class="post-image"><video src='.$row['media_url'].' /></div>';
+        }
+
+        $output .= '<li class="saved-post">';
+        $output .= $media_item;
+        $output .= '<div class="post-content">';
+        $output .= '<h3>' . $short_content . '</h3>';
+        $output .= '<p class="post-author"><span>Người đăng:</span> ' . htmlspecialchars($row['full_name']) . '</p>';
+        $output .= '<p class="post-date"><span>Ngày lưu:</span> ' . date('d/m/Y H:i', strtotime($row['saved_at'])) . '</p>';
+        $output .= '<button class="delete-btn" data-id="' . $row['saved_id'] . '">Xóa</button>';
+        $output .= '</div>';
+        $output .= '</li>';
     }
 } else {
-    echo "<p>Không có bài viết nào đã lưu</p>";
+    $output .= '<div class="no-posts">Chưa có bài viết nào được lưu.</div>';
 }
+
+echo $output;
 ob_end_flush();
 ?>
-
-</body>
-</html>

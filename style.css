@@ -156,19 +156,36 @@ textarea::placeholder {
   font-size: 14px;
 }
 
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+  padding: 10px;
+}
+
+.dropdown-menu.active {
+  display: flex;
+}
+
 .dropdown-menu a {
   padding: 10px;
   text-decoration: none;
   color: black;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
   transition: background 0.3s;
 }
 
 .dropdown-menu a:hover {
   background: #f0f2f5;
 }
+
 
 .shortcut {
   margin-left: auto;
@@ -325,6 +342,7 @@ body {
 .saved-container {
   display: flex;
   padding: 20px;
+  
 }
 
 .sidebar {
