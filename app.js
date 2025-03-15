@@ -1,44 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const articleList = document.getElementById('article-list');
+document.addEventListener("DOMContentLoaded", function () {
+    // Lấy tất cả các phần tử savedpost và gán thuộc tính data-id
+    document.querySelectorAll(".savedpost").forEach(post => {
+        const postId = post.getAttribute("data-id");
+        if (!postId) {
+            console.error("Bài viết không có ID");
+        }
+    });
 
-  // Hiển thị danh sách bài viết
-  fetch('fetch.php')
-  .then(response => response.json())
-  .then(data => {
-      let savedPostsContainer = document.getElementById('savedPosts');
-      savedPostsContainer.innerHTML = '';
-
-      data.forEach(post => {
-          let postElement = `
-              <div class="post">
-                  <h3>Người đăng: ${post.username}</h3>
-                  <p>Nội dung: ${post.content}</p>
-                  <small>Saved at: ${post.saved_at}</small>
-                  <button onclick="deletePost(${post.saved_id})">Xóa</button>
-              </div>
-          `;
-          savedPostsContainer.innerHTML += postElement;
-      });
-  })
-  .catch(error => console.error('Lỗi:', error));
-
-
-  // Xóa bài viết
-  window.deleteArticle = function (id) {
-      if (confirm('Bạn có chắc muốn xóa bài viết này không?')) {
-          fetch(`delete.php?id=${id}`, { method: 'GET' })
-              .then(response => {
-                  if (!response.ok) throw new Error('Xóa không thành công');
-                  return response.text();
-              })
-              .then(message => {
-                  alert(message);
-                  location.reload();
-              })
-              .catch(error => {
-                  console.error('Delete error:', error);
-                  alert('Xóa thất bại!');
-              });
-      }
-  };
+    // Lắng nghe sự kiện click trên tất cả các nút xóa
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const postElement = this.closest(".savedpost");
+            const postId = postElement.getAttribute("data-id");
+            
+            if (!postId) {
+                console.error("Không tìm thấy ID bài viết để xoá");
+                return;
+            }
+            
+            if (confirm("Bạn có chắc chắn muốn xoá bài viết này không?")) {
+                fetch("delete.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: postId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        postElement.remove(); // Xóa khỏi giao diện
+                    } else {
+                        alert("Xoá thất bại: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Lỗi khi gửi yêu cầu xoá:", error));
+            }
+        });
+    });
 });

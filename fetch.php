@@ -2,11 +2,12 @@
 ob_start();
 include 'connect.php';
 
-$query = "SELECT savedposts.saved_id, savedposts.post_id, savedposts.saved_at, users.full_name, posts.content , posts.media_url
-          FROM savedposts 
-          JOIN posts ON savedposts.post_id = posts.post_id 
-          JOIN users ON posts.user_id = users.user_id 
-          ORDER BY savedposts.saved_at DESC";
+$query = "SELECT sp.saved_id, sp.post_id, sp.saved_at, 
+                 u.full_name, p.content , p.media_url
+          FROM savedposts sp
+          JOIN posts p ON sp.post_id = p.post_id 
+          JOIN users u ON p.user_id = u.user_id 
+          ORDER BY sp.saved_at DESC";
 
 $result = mysqli_query($conn, $query);
 $output = '';
@@ -25,7 +26,7 @@ if ($result && $result->num_rows > 0) {
             : $media_item = '<div class="post-image"><video src='.$row['media_url'].' /></div>';
         }
 
-        $output .= '<li class="saved-post">';
+        $output .= '<li class="saved-post" data-id="' . $row['saved_id'] . '">';
         $output .= $media_item;
         $output .= '<div class="post-content">';
         $output .= '<h3>' . $short_content . '</h3>';
