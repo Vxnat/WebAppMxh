@@ -4,9 +4,10 @@
     if(isset($_POST['fetchSuggest'])){
         $user_id = $_SESSION['user_id'];
 
+        // Lay danh sach nhung nguoi minh chua ket ban
         $query = "SELECT user_id, full_name , avatar 
-        FROM users WHERE created_at >= NOW() - INTERVAL 30 DAY
-        AND user_id != ? -- Khong lay chinh ban than
+        FROM users WHERE
+        user_id != ? -- Khong lay chinh ban than
         AND user_id NOT IN (
         SELECT friend_id FROM friendships WHERE user_id = ?
         UNION

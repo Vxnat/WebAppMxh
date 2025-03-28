@@ -180,13 +180,15 @@
         $currentTime = time();
         $timeDifference = $currentTime - $time;
 
+
         // Các giá trị thời gian cơ bản
         $seconds = $timeDifference;
-        $minutes = floor($seconds / 60);
-        $hours = floor($seconds / 3600);
-        $days = floor($seconds / 86400);
-        $weeks = floor($seconds / 604800);
-        $months = floor($seconds / 2592000);
+        $minutes = ceil($seconds / 60);
+        $hours = ceil($seconds / 3600);
+        $days = ceil($seconds / 86400);
+        $weeks = ceil($seconds / 604800);
+        $months = ceil($seconds / 2592000);
+
     
         // Kiểm tra các khoảng thời gian để trả về kết quả phù hợp
         if ($seconds < 60) {

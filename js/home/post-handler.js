@@ -966,7 +966,7 @@ $(document).ready(function () {
     }
   });
 
-  // Hàm hỗ trợ lấy userId từ URL (nếu cần)
+  // Hàm hỗ trợ lấy userId từ URL
   // function getUserIdFromUrl() {
   //   const urlParams = new URLSearchParams(window.location.search);
   //   return urlParams.get('user_id');

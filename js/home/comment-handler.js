@@ -591,8 +591,6 @@ $(document).ready(function () {
           $('.post__box-comment_list').append($newComments); // Chèn vào danh sách bình luận
           $newComments.slideDown(); // Thêm hiệu ứng trượt xuống
 
-          // Cập nhật offset
-
           // Kiểm tra nếu không còn bình luận nào để tải
           if (!data.hasMore) {
             button.hide(); // Ẩn nút "Tải thêm bình luận"

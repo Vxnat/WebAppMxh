@@ -30,10 +30,10 @@
                 try {
                     // Cấu hình SMTP
                     $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com'; // SMTP server (vd: Gmail)
+                    $mail->Host = 'smtp.gmail.com'; // SMTP server
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'nguyenatu23@gmail.com'; // Email của bạn
-                    $mail->Password = 'tkio emnp tirc hzed'; // Mật khẩu ứng dụng (app password)
+                    $mail->Username = 'nguyenatu23@gmail.com'; // Email
+                    $mail->Password = 'tkio emnp tirc hzed'; // Mật khẩu ứng dụng
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Mã hóa
                     $mail->Port = 587; // Cổng SMTP
         
