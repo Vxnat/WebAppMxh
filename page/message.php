@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+<?php
+session_start();
+?>
+=======
+>>>>>>> e5d0414642e1bcdf00f10fe7a05ec46bf2a80d8a
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,11 +27,19 @@
                     <i class="ri-chat-1-fill"></i>
                 </a>
                 <ul class="chat-sidebar-menu">
+<<<<<<< HEAD
+                    <li><a href="#" data-title="Home"><i class="ri-home-4-line"></i></a></li>
+                    <li class="active"><a href="#" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
+                    <li class="chat-sidebar-profile" data-user-id="1">
+                        <button type="button" class="chat-sidebar-profile-toggle">
+                            <img src="" alt="">
+=======
                     <li class="active"><a href="#" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
                     <li class="chat-sidebar-profile">
                         <button type="button" class="chat-sidebar-profile-toggle">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                                 alt="">
+>>>>>>> e5d0414642e1bcdf00f10fe7a05ec46bf2a80d8a
                         </button>
                         <ul class="chat-sidebar-profile-dropdown">
                             <li><a href="#"><i class="ri-user-line"></i> Profile</a></li>
@@ -39,6 +53,21 @@
             <div class="chat-content">
                 <!-- start: Content side -->
                 <div class="content-sidebar">
+<<<<<<< HEAD
+                    <div class="content-sidebar-title">
+                        <p>Chats</p>
+                        <button type="button" class="content-sidebar-add-chat add-group"><i
+                                class="ri-group-line"></i></button>
+                    </div>
+                    <form action="" class="content-sidebar-form">
+                        <input type="search" class="content-sidebar-input" placeholder="Search...">
+                        <button type="button" class="content-sidebar-submit"><i class="ri-search-line"></i></button>
+                    </form>
+                    <div class="content-messages">
+                        <ul class="content-messages-list person-chat">
+                            <li class="content-message-title"><span>Tin nhắn trực tiếp</span></li>
+                        </ul>
+=======
                     <div class="content-sidebar-title">Chats</div>
                     <form action="" class="content-sidebar-form">
                         <input type="search" class="content-sidebar-input" placeholder="Search...">
@@ -50,6 +79,7 @@
                             <li class="content-message-title"><span>Tin nhắn trực tiếp</span></li>
                         </ul>
                         <!-- Chat nhom -->
+>>>>>>> e5d0414642e1bcdf00f10fe7a05ec46bf2a80d8a
                         <ul class="content-messages-list group-chat">
                             <li class="content-message-title"><span>Nhóm chat</span></li>
                         </ul>
@@ -61,6 +91,10 @@
                     <i class="ri-chat-3-line"></i>
                     <p>Select chat and view conversation!</p>
                 </div>
+<<<<<<< HEAD
+                <!-- Conversation Container -->
+                <span class="conversation-container"></span>
+=======
                 <span class="conversation-container"></span>
                 <div class="conversation" id="1_2">
                     <div class="conversation-top">
@@ -485,12 +519,24 @@
                     </div>
                 </div>
                 <!-- end: Conversation -->
+>>>>>>> e5d0414642e1bcdf00f10fe7a05ec46bf2a80d8a
             </div>
             <!-- end: Content -->
         </div>
     </section>
     <!-- end: Chat -->
+<<<<<<< HEAD
+    <div class='dialog-container'>
+        <div class="wrapper">
+        </div>
+    </div>
+</body>
+<script src="../js/config/cloudinary-config.js"></script>
+<script type="module" src="../js/config/firebase-chat.js"></script>
+<script type="module" src="../js/message/message-handler.js"></script>
+=======
     <script src="../js/message/message-handler.js"></script>
 </body>
+>>>>>>> e5d0414642e1bcdf00f10fe7a05ec46bf2a80d8a
 
 </html>
