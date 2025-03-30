@@ -168,6 +168,7 @@
                         <div class="title-box">
                             <h3>Friends</h3>
                             <a href="">All Friends</a>
+                            <button><a href="show more friends">show more friends</a></button>
                         </div>
                         <p>120 (10 mutual)</p>
                         <div class="friends-box">
@@ -186,6 +187,18 @@
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />
                                 <p>Antony</p>
+                            </div>
+                            <div>
+                                <img src="../img/default-avatar.png" alt="" />
+                                <p>Bradon</p>
+                            </div>
+                            <div>
+                                <img src="../img/default-avatar.png" alt="" />
+                                <p>Bradon</p>
+                            </div>
+                            <div>
+                                <img src="../img/default-avatar.png" alt="" />
+                                <p>Bradon</p>
                             </div>
                             <div>
                                 <img src="../img/default-avatar.png" alt="" />

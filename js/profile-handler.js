@@ -173,13 +173,14 @@ $(document).ready(function () {
   });
 
   // Chức năng hiển thị danh sách tất cả bạn bè
-  $(document).on('click', '#all-friend-btn', function (e) {
+  $(document).on('click', '.show-more-friends-btn', function (e) {
     e.preventDefault();
     $.ajax({
       url: '../ajax/profile/profile-handler.php',
       method: 'POST',
       data: {
-        get_all_friends: true,
+        show_more_friends:true,
+        //get_all_friends: true,
         profileUserId: profileUserId,
       },
       success: function (response) {
@@ -193,20 +194,124 @@ $(document).ready(function () {
       },
     });
   });
+  // Chức năng hủy kết bạn
+  $(document).on('click', '.friend-btn', function () {
+    const friendId = profileUserId;
 
-  
+    let result = confirm('Bạn có muốn hủy kết bạn với người dùng này ko ?');
+    if (result) {
+      $.ajax({
+        url: '../ajax/profile/profile-handler.php',
+        method: 'POST',
+        data: {
+          remove_friend: true,
+          friend_id: friendId,
+        },
+        success: function (response) {
+          const data = JSON.parse(response);
+          if (data.success) {
+            alert('Huy ket ban thanh cong');
+            window.location.reload(); // Tài lại trang để cập nhật giao diện
+          } else {
+            alert('Huy ket ban that bai');
+          }
+        },
+      });
+    }
+  });
  
 
+  // Chức năng gửi lời mởi kết bạn
+  $(document).on('click', '.add-friends-btn', function () {
+    const friendId = profileUserId;
+    $.ajax({
+      url: '../ajax/profile/profile-handler.php',
+      method: 'POST',
+      data: {
+        add_friend: true,
+        friend_id: friendId,
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          alert('Gui loi moi ket ban thanh cong');
+          window.location.reload();
+        } else {
+          alert('Gui loi moi ket ban that bai');
+        }
+      },
+    });
+  });
+
+  // Chức năng xóa lời mời kết bạn mình đã gửi
+  $(document).on('click', '.cancel-friend-request-btn', function () {
+    const friendId = profileUserId;
+
+    $.ajax({
+      url: '../ajax/profile/profile-handler.php',
+      method: 'POST',
+      data: {
+        cancel_friend_request: true,
+        friend_id: friendId,
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          alert('Xoa loi moi ket ban thanh cong');
+          window.location.reload();
+        } else {
+          alert('Xoa loi moi ket ban that bai');
+        }
+      },
+    });
+  });
+
+  // Chức năng chấp nhận lời mời kết bạn từ người khác
+  $(document).on('click', '.accept-friend-request-btn', function () {
+    const friendId = profileUserId;
+    $.ajax({
+      url: '../ajax/profile/profile-handler.php',
+      method: 'POST',
+      data: {
+        accept_friend_request: true,
+        friend_id: friendId,
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          alert('Chap nhan loi moi ket ban thanh cong');
+          window.location.reload();
+        } else {
+          alert('Chap nhan loi moi ket ban that bai');
+        }
+      },
+    });
+  });
+
+  // Chức năng từ chối lời mời kết bạn từ người khác
+  $(document).on('click', '.decline-friend-request-btn', function () {
+    const friendId = profileUserId;
+    $.ajax({
+      url: '../ajax/profile/profile-handler.php',
+      method: 'POST',
+      data: {
+        decline_friend_request: true,
+        friend_id: friendId,
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.success) {
+          alert('Tu choi loi moi ket ban thanh cong');
+          window.location.reload();
+        } else {
+          alert('Tu choi loi moi ket ban that bai');
+        }
+      },
+    });
+  });
   
 
   
-
-  
-
-  
-
-  
-
   // Đóng dialog
   $(document).on('click', function (event) {
     if (!$(event.target).closest('.dialog-wrapper').length && $('.dialog-container').hasClass('active')) {

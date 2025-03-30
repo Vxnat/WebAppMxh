@@ -2,7 +2,9 @@
 require_once '../db_connection.php';
 session_start();
 
-$_SESSION['user_id'] = 1; // Placeholder userId
+$_SESSION['user_id'] = 4; // Placeholder userId
+
+
 
 // Lấy dữ liệu của người dùng
 if (isset($_POST['get_user_profile'])) {
@@ -20,12 +22,16 @@ if (isset($_POST['get_user_profile'])) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
+
     $html = '';
 
     if ($userData = mysqli_fetch_assoc($result)) {
 
         // Gọi hàm lấy danh sách bạn bè
-        $friend_data = getUserFriends($profile_user_id, 6, $conn);
+
+        $friend_data = getUserFriends($profile_user_id, null, $conn);
+
+
 
         // Trả về html profile người dùng
         $html .= getProfileUser($userData, $friend_data, $current_user_id, $profile_user_id, $isMe, $conn);
@@ -46,7 +52,7 @@ function getProfileUser($userData, $friend_data, $current_user_id, $profile_user
 
     // Thông tin cơ bản
     $avatar = $userData['avatar'] ?: '../img/default-avatar.png';
-    $background = $userData['bg_image'] ?: '../img/default-bg.jpg';
+    $background = $userData['bg_image'] ?: '../img/default_bg.jpg';
     $name = htmlspecialchars($userData['full_name']);
     $bio = htmlspecialchars($userData['bio']) ?: "Believe in yourself and you can do everything.";
     $location = htmlspecialchars($userData['location']) ?: "Unknown location";
@@ -119,10 +125,13 @@ function getProfileUser($userData, $friend_data, $current_user_id, $profile_user
                   <div class="profile-intro">
                   <div class="title-box">
                     <h3>Friends</h3>
-                    <a href="#" id="all-friend-btn">All Friends</a>
+                    
                   </div>
                   <p>' . $total_friends . ' Friends</p>
                   <div class="friends-box">' . $friends_html . '</div>
+                  <br>
+                  <a href="#" id="all-friend-btn">show more friends</a>
+                  <br>
                 </div>
               </div>
               <div class="post-col">
@@ -270,7 +279,7 @@ if (isset($_POST['get_edit_profile_content'])) {
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $avatar = !empty($row['avatar']) ? $row['avatar'] : '../img/default-avatar.png';
-        $background = !empty($row['bg_image']) ? $row['bg_image'] : '../img/default-bg.jpg';
+        $background = !empty($row['bg_image']) ? $row['bg_image'] : '../img/default_bg.jpg';
         $location = htmlspecialchars($row['location']);
         $birthday = htmlspecialchars($row['birthday']);
         $bio = htmlspecialchars($row['bio']);
@@ -355,6 +364,7 @@ if (isset($_POST['get_all_friends'])) {
 
     // Gọi hàm lấy danh sách bạn bè
     $friend_data = getUserFriends($profile_user_id, null, $conn);
+    $show_more_firiends = getUserFriends($profile_user_id, 3, $conn);
     $friends = $friend_data['friends'];
     $total_friends = count($friends); // Đếm số bạn bè hiển thị
 
