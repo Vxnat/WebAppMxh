@@ -7,6 +7,7 @@ if ($conn -> connect_errno) {
   exit();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 ?>
@@ -18,3 +19,8 @@ if ($conn -> connect_errno) {
 
 ?>
 >>>>>>> origin/NguyenHongPhuc
+=======
+}
+
+?>
+>>>>>>> origin/PhamXuanNhat

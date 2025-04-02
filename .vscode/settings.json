@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 <<<<<<< HEAD
@@ -14,3 +15,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
 >>>>>>> origin/NguyenHongPhuc
 }
+=======
+    "liveServer.settings.port": 5501
+}
+>>>>>>> origin/PhamXuanNhat
