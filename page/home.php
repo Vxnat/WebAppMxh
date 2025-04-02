@@ -177,7 +177,7 @@
                 <div class="sidebar__wrapper">
                     <div class="sidebar__wrapper-header">
                         <strong>Suggested for you</strong>
-                        <a href="#">See all</a>
+                        <a href="suggest.php">See all</a>
                     </div>
                     <form id="suggest-list">
                     </form>
@@ -214,7 +214,6 @@
 <script src="../js/home/suggest-handler.js"></script>
 <script src="../js/home/shortcut-handler.js"></script>
 <script src="../js/home/home-global.js"></script>
-<script src="../js/home/custom-video.js"></script>
 <script src="../js/config/emoji.js"></script>
 <script src="../js/extension/extension.js"></script>
 

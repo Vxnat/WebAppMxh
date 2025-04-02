@@ -2,8 +2,6 @@
 require_once '../db_connection.php';
 session_start();
 
-$_SESSION['user_id'] = 1; // Placeholder userId
-
 // Lấy dữ liệu của người dùng
 if (isset($_POST['get_user_profile'])) {
     // Id của trang cá nhân người dùng
@@ -228,7 +226,7 @@ function getFriendshipButtons($current_user_id, $profile_user_id, $isMe, $conn)
 
 // Thay đổi ảnh bìa của người dùng
 if (isset($_POST['change_cover_photo'])) {
-    $current_user_id = $_POST['user_id'];
+    $current_user_id = $_POST['profileUserId    '];
     $new_cover_photo = $_POST['background_url'];
 
     $query = "UPDATE users SET bg_image = '$new_cover_photo' WHERE user_id = '$current_user_id'";
@@ -242,7 +240,7 @@ if (isset($_POST['change_cover_photo'])) {
 
 // Thay đổi ảnh avatar của người dùng
 if (isset($_POST['change_avatar'])) {
-    $current_user_id = $_POST['user_id'];
+    $current_user_id = $_POST['profileUserId'];
     $new_avatar = $_POST['avatar_url'];
 
     $query = "UPDATE users SET avatar = '$new_avatar' WHERE user_id = '$current_user_id'";

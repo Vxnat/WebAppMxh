@@ -194,19 +194,6 @@ $(document).ready(function () {
     });
   });
 
-  
- 
-
-  
-
-  
-
-  
-
-  
-
-  
-
   // Đóng dialog
   $(document).on('click', function (event) {
     if (!$(event.target).closest('.dialog-wrapper').length && $('.dialog-container').hasClass('active')) {

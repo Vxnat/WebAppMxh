@@ -48,6 +48,7 @@
 .pd-images {
   position: relative;
   width: 100px;
+  height: 100px;
   margin-right: 20px;
 }
 
@@ -59,13 +60,18 @@
 
 .avatar-btn {
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   right: 0;
   outline: none;
   border: none;
   background-color: #eeeeee;
   border-radius: 50%;
+  height: 20px;
+  width: 20px;
   padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 12px;
 }
 
@@ -229,15 +235,11 @@
 }
 
 .friends-box div img {
-  /* width: 100%;
-  height: auto;
-  cursor: pointer;
-  border-radius: 5px;
-  padding-bottom: 30px; */
-  max-width: 70px;
+  width: 70px;
+  height: 70px;
   overflow: hidden;
   border-radius: 5px;
-  padding-bottom: 30px;
+  margin-bottom: 20px;
   cursor: pointer;
 }
 

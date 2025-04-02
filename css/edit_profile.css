@@ -50,8 +50,8 @@ a {
 /* AVATAR */
 
 .avatar img {
-  max-width: 200px;
-  height: auto;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   border: 1px solid #d1d2d5;
   display: block;
