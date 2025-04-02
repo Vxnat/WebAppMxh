@@ -6,9 +6,15 @@ if ($conn -> connect_errno) {
   echo "Failed to connect to MySQL: " . $conn -> connect_error;
   exit();
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 ?>
 =======
 }
 >>>>>>> origin/nguyenthanhha
+=======
+}
+
+?>
+>>>>>>> origin/NguyenHongPhuc

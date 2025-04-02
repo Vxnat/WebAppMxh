@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 <<<<<<< HEAD
@@ -8,4 +9,8 @@
   },
 >>>>>>> origin/nguyenthanhha
   "liveServer.settings.port": 5501
+=======
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+>>>>>>> origin/NguyenHongPhuc
 }
