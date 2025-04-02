@@ -1,6 +1,6 @@
 <?php
 ob_start();
-include 'connect.php';
+include( '../ajax/connect.php');
 
 $query = "SELECT sp.saved_id, sp.post_id, sp.saved_at, 
                  u.full_name, p.content , p.media_url

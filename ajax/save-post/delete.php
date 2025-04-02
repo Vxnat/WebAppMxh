@@ -1,16 +1,17 @@
 <?php
 ob_start();
 header("Content-Type: application/json");
-include 'connect.php';
+include ('../connect.php');
 
 $response = ["success" => false, "message" => "Lỗi không xác định"];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['saved_id'])) {
-        $saved_id = intval($_POST['saved_id']); // Ép kiểu tránh lỗi SQL Injection
+    // Dùng để đọc chuỗi Json bên js truyền sang
+    $data = json_decode(file_get_contents("php://input"), true);
+    if (isset($data['saved_id'])) {
+        $saved_id = intval($data['saved_id']); // Ép kiểu tránh lỗi SQL Injection
         $query = "DELETE FROM savedposts WHERE saved_id = $saved_id";
         $result = mysqli_query($conn, $query);
-
         if ($result) {
             $response = ["success" => true, "message" => "Xóa bài thành công"];
         } else {
