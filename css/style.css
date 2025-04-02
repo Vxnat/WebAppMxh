@@ -95,6 +95,107 @@ textarea::placeholder {
   font-size: 24px;
   border-radius: 100%;
 }
+<<<<<<< HEAD
+=======
+.avatar-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin-right: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-btn img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  display: none;
+  flex-direction: column;
+  z-index: 10;
+  padding: 10px;
+}
+
+.dropdown-menu.active {
+  display: flex;
+}
+
+.dropdown-header {
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.profile-btn {
+  border: none;
+  background: #f0f2f5;
+  padding: 8px;
+  border-radius: 8px;
+  width: 90%;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+  padding: 10px;
+}
+
+.dropdown-menu.active {
+  display: flex;
+}
+
+.dropdown-menu a {
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  display: block;
+  transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background: #f0f2f5;
+}
+
+
+.shortcut {
+  margin-left: auto;
+  color: gray;
+  font-size: 12px;
+}
+
+>>>>>>> origin/TranDucManh
 
 .header__action-logo span {
   font-size: 20px;
@@ -234,6 +335,7 @@ textarea::placeholder {
   background-color: var(--white-color);
   display: none;
 }
+<<<<<<< HEAD
 
 .header__notify-header {
   color: var(--text-color);
@@ -436,10 +538,85 @@ textarea::placeholder {
   justify-content: space-between;
   padding: 10px;
   margin: 0 10px;
+=======
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+.saved-container {
+  display: flex;
+  padding: 20px;
+  
+}
+
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.saved-menu {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.saved-menu:hover {
+  background-color: #f0f2f5;
+}
+
+.saved-menu i {
+  margin-right: 10px;
+}
+
+.collection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.collection:hover {
+  background-color: #f0f2f5;
+}
+
+.collection img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.create-collection {
+  background: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+>>>>>>> origin/TranDucManh
   border-radius: 5px;
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 .header__info .wrapper .action_list .action_item:hover {
   background-color: var(--bg-color);
   transition: 0.2s all;
@@ -1760,3 +1937,22 @@ textarea::-webkit-scrollbar {
   transition: 0.2s linear;
 }
 /* End Edit Post */
+=======
+.create-collection:hover {
+  background: #165dd1;
+}
+
+.content {
+  flex: 1;
+  margin-left: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+>>>>>>> origin/TranDucManh
