@@ -1,5 +1,11 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+<<<<<<< HEAD
+=======
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+>>>>>>> origin/nguyenthanhha
   "liveServer.settings.port": 5501
 }

@@ -277,7 +277,10 @@ textarea::placeholder {
 
 .header__notify-img .avatar {
   width: 60px;
+<<<<<<< HEAD
   height: 60px;
+=======
+>>>>>>> origin/nguyenthanhha
   border-radius: 100%;
   background-color: #bcc0c4;
   overflow: hidden;
@@ -381,12 +384,15 @@ textarea::placeholder {
   display: none;
 }
 
+<<<<<<< HEAD
 .header__info .wrapper > a {
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
 }
 
+=======
+>>>>>>> origin/nguyenthanhha
 .header__info .wrapper.active {
   display: block;
 }
@@ -416,11 +422,14 @@ textarea::placeholder {
   border: 1px solid #e9e9e9;
 }
 
+<<<<<<< HEAD
 .header__info .wrapper .action_list > a {
   color: var(--text-color);
   text-decoration: none;
 }
 
+=======
+>>>>>>> origin/nguyenthanhha
 .header__info .wrapper .action_list .action_item {
   display: flex;
   align-items: center;
@@ -541,6 +550,7 @@ textarea::placeholder {
 }
 
 .sidebar__infor-btn {
+<<<<<<< HEAD
   text-align: center;
   text-decoration: none;
   background-color: #007bff;
@@ -551,6 +561,15 @@ textarea::placeholder {
   border-radius: 7px;
   margin-top: 20px;
   font-size: 15px;
+=======
+  background-color: #007bff;
+  color: var(--white-color);
+  border: none;
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+>>>>>>> origin/nguyenthanhha
   cursor: pointer;
 }
 
@@ -806,8 +825,12 @@ textarea::placeholder {
   color: #a3a3a3;
 }
 
+<<<<<<< HEAD
 .sidebar__wrapper-item .toggle-add-friend,
 .sidebar__wrapper-item .remove-shortcut {
+=======
+.sidebar__wrapper-item .toggle-add-friend {
+>>>>>>> origin/nguyenthanhha
   position: absolute;
   right: 0;
   border: none;
@@ -1171,6 +1194,7 @@ textarea::placeholder {
   padding: 0 20px;
 }
 
+<<<<<<< HEAD
 .post__box-like:hover {
   text-decoration: underline;
   cursor: pointer;
@@ -1180,6 +1204,8 @@ textarea::placeholder {
   padding: 10px;
 }
 
+=======
+>>>>>>> origin/nguyenthanhha
 .post__box-emotion_right {
   display: flex;
   align-items: center;
