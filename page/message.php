@@ -24,7 +24,7 @@ session_start();
                     <i class="ri-chat-1-fill"></i>
                 </a>
                 <ul class="chat-sidebar-menu">
-                    <li><a href="#" data-title="Home"><i class="ri-home-4-line"></i></a></li>
+                    <li><a href="home.php" data-title="Home"><i class="ri-home-4-line"></i></a></li>
                     <li class="active"><a href="#" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
                     <li class="chat-sidebar-profile" data-user-id=<?= $_SESSION['user_id'] ?>>
                         <button type="button" class="chat-sidebar-profile-toggle">

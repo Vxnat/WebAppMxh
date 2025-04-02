@@ -177,7 +177,7 @@
                 <div class="sidebar__wrapper">
                     <div class="sidebar__wrapper-header">
                         <strong>Suggested for you</strong>
-                        <a href="#">See all</a>
+                        <a href="suggest.php">See all</a>
                     </div>
                     <form id="suggest-list">
                     </form>

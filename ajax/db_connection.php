@@ -5,22 +5,4 @@ $conn = new mysqli("localhost","root","","social_media_web");
 if ($conn -> connect_errno) {
   echo "Failed to connect to MySQL: " . $conn -> connect_error;
   exit();
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
-
-?>
-=======
-}
->>>>>>> origin/nguyenthanhha
-=======
-}
-
-?>
->>>>>>> origin/NguyenHongPhuc
-=======
-}
-
-?>
->>>>>>> origin/PhamXuanNhat

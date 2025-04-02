@@ -3,9 +3,6 @@ require_once '../db_connection.php';
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 session_start();
 
-$_SESSION['user_id'] = 1; // ID người dung hien tai
-$_SESSION['avatar'] = 'https://kenh14cdn.com/203336854389633024/2024/9/4/luu-diec-phi-o-tuoi-37-5788-1725417084281-1725417084597654952264.jpg';
-
 // Chức năng lấy danh sách các cuộc trò chuyện trực tiếp
 if (isset($_POST['getPersonChatList'])) {
     $current_user_id = $_SESSION['user_id'];// Id của người dùng hiện tại

@@ -1,7 +1,7 @@
 <?php
 ob_start();
 header("Content-Type: application/json");
-include ('../connect.php');
+include ('../db_connection.php');
 
 $response = ["success" => false, "message" => "Lỗi không xác định"];
 

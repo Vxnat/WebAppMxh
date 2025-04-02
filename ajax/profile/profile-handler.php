@@ -2,10 +2,6 @@
 require_once '../db_connection.php';
 session_start();
 
-$_SESSION['user_id'] = 4; // Placeholder userId
-
-
-
 // Lấy dữ liệu của người dùng
 if (isset($_POST['get_user_profile'])) {
     // Id của trang cá nhân người dùng
@@ -30,8 +26,6 @@ if (isset($_POST['get_user_profile'])) {
         // Gọi hàm lấy danh sách bạn bè
 
         $friend_data = getUserFriends($profile_user_id, null, $conn);
-
-
 
         // Trả về html profile người dùng
         $html .= getProfileUser($userData, $friend_data, $current_user_id, $profile_user_id, $isMe, $conn);

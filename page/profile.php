@@ -1,3 +1,6 @@
+<?php
+  include("../includes/check_login.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +8,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Social Media Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -34,18 +36,19 @@
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Search for friends" aria-label="Search" id="navbar-search" />
                     </div>
-                    <div id="search-result"></div>
+                    <div id="search-result">
+                    </div>
                 </div>
                 <!-- End Navbar Search -->
                 <!-- Navbar Action -->
                 <ul class="header__action-action_list">
                     <li class="header__action-action_item" id="navbar-home">
-                        <a style="background-color: #c9e2ff">
+                        <a href="home.php" style="background-color: #c9e2ff">
                             <i class="fas fa-home" style="color: #3080eb"></i>
                         </a>
                     </li>
                     <li class="header__action-action_item" id="navbar-chat">
-                        <a href="#">
+                        <a href="message.php">
                             <i class="far fa-comment"></i>
                         </a>
                     </li>
@@ -65,31 +68,37 @@
                 <!-- End Navbar Action -->
             </div>
             <!-- Navbar Info User -->
-            <div class="header__info">
-                <img src="../img/default-avatar.png" alt="" class="header__infor-avatar" />
+            <div class="header__info" data-user-id=<?=$_SESSION["user_id"] ?>>
+                <?=$logined ?>
                 <div class="wrapper">
-                    <div class="card">
-                        <img src="../img/default-avatar.png" alt="" />
-                        <span>NguyenAnhTu</span>
-                    </div>
+                    <a href="profile.php?user_id=<?=$_SESSION['user_id'] ?>">
+                        <div class="card">
+                            <img src=<?=$_SESSION['avatar'] ?> alt="">
+                            <span><?=$_SESSION['full_name'] ?></span>
+                        </div>
+                    </a>
                     <ul class="action_list">
-                        <li class="action_item">
-                            <div style="display: flex; align-items: center">
-                                <img src="../img/setting.png" alt="" />
-                                <span>Settings & privacy</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </li>
-                        <li class="action_item">
-                            <div style="display: flex; align-items: center">
-                                <img src="../img/favorite.png" alt="" />
-                                <span>Favorite</span>
-                            </div>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </li>
+                        <a href="../page/setting.php">
+                            <li class="action_item">
+                                <div style="display: flex; align-items: center;">
+                                    <img src="../img/setting.png" alt="">
+                                    <span>Settings & privacy</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </li>
+                        </a>
+                        <a href="favorite.php">
+                            <li class="action_item">
+                                <div style="display: flex; align-items: center;">
+                                    <img src="../img/favorite.png" alt="">
+                                    <span>Favorite</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </li>
+                        </a>
                         <li class="action_item" id="navbar-logout">
-                            <div style="display: flex; align-items: center">
-                                <img src="../img/logout.png" alt="" />
+                            <div style="display: flex; align-items: center;">
+                                <img src="../img/logout.png" alt="">
                                 <span>Logout</span>
                             </div>
                         </li>
@@ -339,6 +348,13 @@
     <!-- End Dialog -->
     <div id="edit-profile-modal"></div>
 </body>
+<script src="../js/index.js"></script>
+<script src="../js/config/cloudinary-config.js"></script>
+<script src="../js/home/search-handler.js"></script>
+<script src="../js/home/noti-handler.js"></script>
+<script src="../js/home/home-global.js"></script>
+<script src="../js/extension/extension.js"></script>
 <script src="../js/profile-handler.js"></script>
+
 
 </html>
