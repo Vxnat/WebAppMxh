@@ -37,7 +37,20 @@
             </div>
             <!--Hiển thị danh sách gợi ý kết bạn-->
             <ul class="suggestions-list">
-                
+                <!-- <li class="suggestion">
+                    <a href="#"><img src="../img/default-avatar.png" alt=""></a>
+                    <div class="suggestion-details">
+                        <h4>PhamXuanNhat</h4>
+                        <div class="common-friends">
+                            <a href="#"><img src="../img/default-avatar.png" alt=""></a>
+                            <p>10 bạn chung</p>
+                        </div>
+                        <div class="action-buttons">
+                            <a href="#"><button class="add">Thêm bạn bè</button></a>
+                            <a href="#"><button class="delete">Gỡ</button></a>
+                        </div>
+                    </div>
+                </li> -->
             </ul>
 
         </div>
