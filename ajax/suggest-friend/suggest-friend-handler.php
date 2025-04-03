@@ -1,10 +1,10 @@
 <?php 
     require_once '../db_connection.php';
-
+    session_start();
+    
     // Lấy danh sách các gợi ý kết bạn
     if(isset($_POST['getSuggestionsList'])){
-        // $userId = $_SESSION['user_id'];
-        $userId = 1;
+        $userId = $_SESSION['user_id'];
         // Lấy danh sách giới thiệu ngẫu nhiên
         $query = "SELECT u.user_id, u.full_name, u.avatar
             FROM Users u
@@ -49,8 +49,7 @@
 
     // Gửi lời mời kết bạn
     if(isset($_POST['addFriend'])){
-        $userId = 1;
-        // $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         $receiverId = $_POST['receiverId'];
 
         // Kiểm tra xem đã kết bạn chưa
@@ -81,8 +80,7 @@
 
     // Lấy về danh sách những người đã gửi kết bạn cho người dùng 
     if(isset($_POST['getFriendRequests'])){
-        // $userId = $_SESSION['user_id'];
-        $userId = 1;
+        $userId = $_SESSION['user_id'];
         $query = "SELECT u.user_id, u.full_name, u.avatar
         FROM Users u
         JOIN Friendships f ON u.user_id = f.user_id
@@ -123,8 +121,7 @@
 
     // Đồng ý lời mời kết bạn
     if(isset($_POST['acceptFriendRequest'])){
-        $userId = 1;
-        // $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         $requestId = $_POST['requestId'];
 
         $updateQuery = "UPDATE Friendships SET status = 'accepted' WHERE user_id = ? AND friend_id = ?";
@@ -143,8 +140,7 @@
 
     // Từ chối lời mời kết bạn
     if(isset($_POST['declineFriendRequest'])){
-        $userId = 1;
-        // $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'];
         $requestId = $_POST['requestId'];
 
         $updateQuery = "DELETE FROM Friendships WHERE user_id = ? AND friend_id = ? AND status = 'pending'";

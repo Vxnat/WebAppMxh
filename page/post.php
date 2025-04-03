@@ -78,25 +78,31 @@
         <div class="header__info" data-user-id=<?=$_SESSION["user_id"] ?>>
             <?=$logined ?>
             <div class="wrapper">
-                <div class="card">
-                    <img src=<?=$_SESSION['avatar'] ?> alt="">
-                    <span><?=$_SESSION['full_name'] ?></span>
-                </div>
+                <a href="profile.php?user_id=<?=$_SESSION['user_id'] ?>">
+                    <div class="card">
+                        <img src=<?=$_SESSION['avatar'] ?> alt="">
+                        <span><?=$_SESSION['full_name'] ?></span>
+                    </div>
+                </a>
                 <ul class="action_list">
-                    <li class="action_item">
-                        <div style="display: flex; align-items: center;">
-                            <img src="../img/setting.png" alt="">
-                            <span>Settings & privacy</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </li>
-                    <li class="action_item">
-                        <div style="display: flex; align-items: center;">
-                            <img src="../img/favorite.png" alt="">
-                            <span>Favorite</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </li>
+                    <a href="../page/setting.php">
+                        <li class="action_item">
+                            <div style="display: flex; align-items: center;">
+                                <img src="../img/setting.png" alt="">
+                                <span>Settings & privacy</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </li>
+                    </a>
+                    <a href="favorite.php">
+                        <li class="action_item">
+                            <div style="display: flex; align-items: center;">
+                                <img src="../img/favorite.png" alt="">
+                                <span>Favorite</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </li>
+                    </a>
                     <li class="action_item" id="navbar-logout">
                         <div style="display: flex; align-items: center;">
                             <img src="../img/logout.png" alt="">
