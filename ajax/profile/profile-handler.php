@@ -124,7 +124,7 @@ function getProfileUser($userData, $friend_data, $current_user_id, $profile_user
                   <p>' . $total_friends . ' Friends</p>
                   <div class="friends-box">' . $friends_html . '</div>
                   <br>
-                  <a href="#" id="all-friend-btn">show more friends</a>
+                
                   <br>
                 </div>
               </div>
@@ -231,7 +231,7 @@ function getFriendshipButtons($current_user_id, $profile_user_id, $isMe, $conn)
 
 // Thay đổi ảnh bìa của người dùng
 if (isset($_POST['change_cover_photo'])) {
-    $current_user_id = $_POST['user_id'];
+    $current_user_id = $_SESSION['user_id'];
     $new_cover_photo = $_POST['background_url'];
 
     $query = "UPDATE users SET bg_image = '$new_cover_photo' WHERE user_id = '$current_user_id'";
@@ -245,12 +245,13 @@ if (isset($_POST['change_cover_photo'])) {
 
 // Thay đổi ảnh avatar của người dùng
 if (isset($_POST['change_avatar'])) {
-    $current_user_id = $_POST['user_id'];
+    $current_user_id = $_SESSION['user_id'];
     $new_avatar = $_POST['avatar_url'];
 
     $query = "UPDATE users SET avatar = '$new_avatar' WHERE user_id = '$current_user_id'";
 
     if (mysqli_query($conn, $query)) {
+        $_SESSION['avatar'] = $new_avatar;
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false]);
